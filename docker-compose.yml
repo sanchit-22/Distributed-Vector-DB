@@ -1,0 +1,91 @@
+version: "3.9"
+services:
+  etcd:
+    image: bitnami/etcd:3.5
+    environment:
+      ALLOW_NONE_AUTHENTICATION: "yes"
+    ports: ["2379:2379"]
+
+  coordinator-0:
+    build: .
+    command: python -m vecscaledb.coordinator.app
+    environment:
+      VECSCALE_NODE_ROLE: coordinator
+      VECSCALE_NODE_ID: coordinator-0
+    depends_on: [etcd]
+    ports: ["8000:8000"]
+    volumes:
+      - ./shared_storage:/shared_storage
+
+  writer-0:
+    build: .
+    command: python -m vecscaledb.writer.app
+    environment:
+      VECSCALE_NODE_ROLE: writer
+      VECSCALE_NODE_ID: writer-0
+    depends_on: [coordinator-0]
+    ports: ["8100:8100"]
+    volumes:
+      - ./shared_storage:/shared_storage
+      - ./wal:/wal
+
+  reader-0:
+    build: .
+    command: python -m vecscaledb.reader.app
+    environment:
+      VECSCALE_NODE_ROLE: reader
+      VECSCALE_NODE_ID: reader-0
+      VECSCALE_READER_SHARD_ID: "0"
+    depends_on: [coordinator-0]
+    ports: ["8200:8200"]
+    volumes:
+      - ./shared_storage:/shared_storage
+
+  # --- Additional readers (uncomment in Phase 6) ---
+  # reader-1:
+  #   build: .
+  #   command: python -m vecscaledb.reader.app
+  #   environment:
+  #     VECSCALE_NODE_ROLE: reader
+  #     VECSCALE_NODE_ID: reader-1
+  #     VECSCALE_READER_SHARD_ID: "1"
+  #   depends_on: [coordinator-0]
+  #   ports: ["8201:8200"]
+  #   volumes:
+  #     - ./shared_storage:/shared_storage
+
+  # reader-2:
+  #   build: .
+  #   command: python -m vecscaledb.reader.app
+  #   environment:
+  #     VECSCALE_NODE_ROLE: reader
+  #     VECSCALE_NODE_ID: reader-2
+  #     VECSCALE_READER_SHARD_ID: "2"
+  #   depends_on: [coordinator-0]
+  #   ports: ["8202:8200"]
+  #   volumes:
+  #     - ./shared_storage:/shared_storage
+
+  # reader-3:
+  #   build: .
+  #   command: python -m vecscaledb.reader.app
+  #   environment:
+  #     VECSCALE_NODE_ROLE: reader
+  #     VECSCALE_NODE_ID: reader-3
+  #     VECSCALE_READER_SHARD_ID: "3"
+  #   depends_on: [coordinator-0]
+  #   ports: ["8203:8200"]
+  #   volumes:
+  #     - ./shared_storage:/shared_storage
+
+  # reader-4:
+  #   build: .
+  #   command: python -m vecscaledb.reader.app
+  #   environment:
+  #     VECSCALE_NODE_ROLE: reader
+  #     VECSCALE_NODE_ID: reader-4
+  #     VECSCALE_READER_SHARD_ID: "4"
+  #   depends_on: [coordinator-0]
+  #   ports: ["8204:8200"]
+  #   volumes:
+  #     - ./shared_storage:/shared_storage

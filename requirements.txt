@@ -1,0 +1,12 @@
+fastapi==0.111.*
+uvicorn[standard]==0.29.*
+httpx==0.27.*
+faiss-cpu==1.8.*
+numpy==1.26.*
+pydantic==2.7.*
+pydantic-settings==2.2.*
+structlog==24.*
+pytest==8.*
+pytest-asyncio==0.23.*
+h5py==3.11.*
+tqdm==4.*
