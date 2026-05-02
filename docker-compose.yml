@@ -57,6 +57,7 @@ services:
       VECSCALE_NODE_ROLE: writer
       VECSCALE_NODE_ID: writer-0
       VECSCALE_COORDINATOR_URLS: '["http://coordinator-0:8000","http://coordinator-1:8000","http://coordinator-2:8000"]'
+      VECSCALE_SEGMENT_FLUSH_THRESHOLD: "${VECSCALE_SEGMENT_FLUSH_THRESHOLD:-50000}"
       VECSCALE_SEGMENT_MERGE_THRESHOLD: "1000"
     depends_on: [coordinator-0]
     ports: ["8100:8100"]

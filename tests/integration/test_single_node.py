@@ -109,6 +109,15 @@ class TestSingleNode:
         assert result["ids"][0] == 42
         assert result["distances"][0] < 1e-5
 
+    def test_search_rejects_wrong_query_dimension(self, client):
+        resp = client.post(
+            "/search",
+            json={"query": [1.0, 0.0], "top_k": 1, "nprobe": NLIST},
+        )
+
+        assert resp.status_code == 400
+        assert "Expected query with 128 numbers" in resp.json()["detail"]
+
     def test_insert_triggers_flush(self, client, random_data, reset_node_state):
         """Insert more than flush threshold → should create a segment."""
         reset_node_state.engine.flush_threshold = 1000

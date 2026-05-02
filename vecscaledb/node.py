@@ -6,7 +6,7 @@ from contextlib import asynccontextmanager
 
 import numpy as np
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 
 from vecscaledb.config import Settings
 from vecscaledb.models import InsertRequest, SearchRequest, SearchResult
@@ -76,6 +76,12 @@ async def search(req: SearchRequest) -> SearchResult:
     """Search a stable snapshot across visible segments and MemTable rows."""
     active_engine = _require_engine()
     query = np.ascontiguousarray(np.array(req.query, dtype=np.float32))
+    if query.ndim != 1 or query.shape[0] != settings.dim:
+        got = query.shape[0] if query.ndim == 1 else "invalid"
+        raise HTTPException(
+            status_code=400,
+            detail=f"Expected query with {settings.dim} numbers, got {got}.",
+        )
     ids, distances = await active_engine.search(
         query=query,
         top_k=req.top_k,
