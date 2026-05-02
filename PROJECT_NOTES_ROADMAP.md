@@ -111,6 +111,24 @@ Its job:
 
 Think of the coordinator as the traffic controller.
 
+## Current Validation Status
+
+As of the latest local validation:
+
+- The Python automated suite passes: `66 passed`.
+- Single-node mode supports health checks, insert, search, WAL recovery, and clean validation errors.
+- Distributed Docker mode starts 10 services: 3 coordinators, 1 writer, 5 readers, and etcd.
+- Writer insert through port `8100` creates durable WAL entries and flushed segments.
+- Coordinator search through port `8000` finds newly inserted vectors through readers.
+- All five readers report ready and loaded segments.
+- Metrics endpoints are available on coordinator, writer, and reader services.
+- Reader failure was tested by stopping one reader; searches continued without HTTP 5xx.
+- Coordinator failover was tested by stopping `coordinator-0` and searching through `coordinator-1`.
+
+This does not mean every possible production failure has been exhausted. It means
+the project is working for the implemented Phase 0 through Phase 8 scope and has
+passed the expected local, integration, and Docker smoke tests.
+
 ### WAL
 
 WAL means Write-Ahead Log.

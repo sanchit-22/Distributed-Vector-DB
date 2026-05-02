@@ -76,6 +76,34 @@ class TestSingleNode:
         health = client.get("/health").json()
         assert health["ntotal"] == N
 
+    def test_insert_rejects_bad_dimensions_and_id_mismatch(self, client):
+        bad_dim = client.post(
+            "/insert",
+            json={"ids": [1], "vectors": [[1.0, 2.0]]},
+        )
+        mismatch = client.post(
+            "/insert",
+            json={
+                "ids": [1, 2],
+                "vectors": [[1.0] + [0.0] * (DIM - 1)],
+            },
+        )
+
+        assert bad_dim.status_code == 400
+        assert "Expected vectors" in bad_dim.json()["detail"]
+        assert mismatch.status_code == 400
+        assert "len(ids)" in mismatch.json()["detail"]
+
+    def test_request_schema_rejects_empty_batches_and_invalid_search_limits(self, client):
+        empty_insert = client.post("/insert", json={"ids": [], "vectors": []})
+        bad_search = client.post(
+            "/search",
+            json={"query": [1.0] + [0.0] * (DIM - 1), "top_k": 0, "nprobe": 1},
+        )
+
+        assert empty_insert.status_code == 422
+        assert bad_search.status_code == 422
+
     def test_search_returns_results(self, client, random_data):
         vectors, ids = random_data
         # Insert all

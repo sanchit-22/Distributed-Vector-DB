@@ -53,7 +53,13 @@ attach_observability(app, settings, logger, lambda: _metrics_gauges())
 async def insert(req: InsertRequest) -> dict:
     active_pipeline = _require_pipeline()
     ids = np.ascontiguousarray(np.array(req.ids, dtype=np.int64))
-    vectors = np.ascontiguousarray(np.array(req.vectors, dtype=np.float32))
+    try:
+        vectors = np.ascontiguousarray(np.array(req.vectors, dtype=np.float32))
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Expected vectors with shape [N, {settings.dim}].",
+        ) from exc
     try:
         return await active_pipeline.insert(ids, vectors)
     except ValueError as exc:

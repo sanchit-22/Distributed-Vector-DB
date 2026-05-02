@@ -215,6 +215,25 @@ Invoke-RestMethod http://127.0.0.1:8200/metrics
 .\.venv\Scripts\python.exe -m pytest tests -v
 ```
 
+Expected current result:
+
+```text
+66 passed
+```
+
+### Latest Docker Smoke
+
+The latest Docker validation checked:
+
+- all 10 services up,
+- all five readers healthy,
+- fresh writer insert with IDs `990001` and `990002`,
+- coordinator search returning `990001` with distance `0.0`,
+- invalid writer insert returning `400`,
+- invalid coordinator search returning `422`,
+- reader restart resilience,
+- coordinator failover via port `8001`.
+
 ## 9. Benchmark Report
 
 The report lives at:

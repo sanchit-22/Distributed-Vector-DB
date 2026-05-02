@@ -1,25 +1,25 @@
 """Pydantic schemas shared across all nodes."""
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class InsertRequest(BaseModel):
-    vectors: list[list[float]]  # shape [N, dim]
-    ids: list[int]
+    vectors: list[list[float]] = Field(min_length=1)  # shape [N, dim]
+    ids: list[int] = Field(min_length=1)
 
 
 class SearchRequest(BaseModel):
-    query: list[float]  # shape [dim]
-    top_k: int = 10
-    nprobe: int = 32
+    query: list[float] = Field(min_length=1)  # shape [dim]
+    top_k: int = Field(default=10, ge=1)
+    nprobe: int = Field(default=32, ge=1)
 
 
 class ReaderSearchRequest(SearchRequest):
-    snapshot_id: int = 0
+    snapshot_id: int = Field(default=0, ge=0)
 
 
 class DeleteRequest(BaseModel):
-    ids: list[int]
+    ids: list[int] = Field(min_length=1)
 
 
 class SearchResult(BaseModel):
@@ -28,15 +28,15 @@ class SearchResult(BaseModel):
 
 
 class SegmentMeta(BaseModel):
-    segment_id: str
-    shard_id: int
-    num_vectors: int
-    snapshot_id: int
-    path: str  # absolute path inside shared_storage
+    segment_id: str = Field(min_length=1)
+    shard_id: int = Field(ge=0)
+    num_vectors: int = Field(ge=0)
+    snapshot_id: int = Field(ge=0)
+    path: str = Field(min_length=1)  # absolute path inside shared_storage
 
 
 class NodeInfo(BaseModel):
-    node_id: str
-    role: str  # coordinator | writer | reader
-    address: str
+    node_id: str = Field(min_length=1)
+    role: str = Field(min_length=1)  # coordinator | writer | reader
+    address: str = Field(min_length=1)
     shard_ids: list[int] = []

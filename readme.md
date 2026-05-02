@@ -5,7 +5,7 @@ This README contains the commands needed to run, test, and verify the project.
 Project folder:
 
 ```powershell
-p4\Distri\distriProject\Distributed-Vector-DB"
+cd "C:\Users\priya\OneDrive\Desktop\SEM 4\Distri\distriProject\Distributed-Vector-DB"
 ```
 
 ## 1. Create And Use Python Environment
@@ -33,7 +33,7 @@ If the virtual environment already exists:
 Expected current result:
 
 ```text
-62 passed
+66 passed
 ```
 
 ## 3. Run Single-Node API
@@ -94,7 +94,7 @@ For larger benchmark runs, use the normal command without that environment
 variable, or reset it:
 
 ```powershell
-Remove-Item Env:\VECSCALE_SEGMENT_FLUSH_THRESHOLD
+Remove-Item Env:\VECSCALE_SEGMENT_FLUSH_THRESHOLD -ErrorAction SilentlyContinue
 docker compose up -d --build
 ```
 
@@ -121,6 +121,8 @@ Check containers:
 ```powershell
 docker compose ps
 ```
+
+Expected: all coordinators, writer, etcd, and all five readers are `Up`; readers should show `(healthy)`.
 
 Stop cluster:
 
@@ -177,6 +179,13 @@ $body = @{
 Invoke-RestMethod -Method Post -Uri http://127.0.0.1:8100/insert -Body $body -ContentType "application/json"
 ```
 
+Expected for the quick demo threshold:
+
+```text
+inserted        : 2
+segment_flushed : True
+```
+
 Important: vectors become visible to distributed readers after they are flushed into a segment. Default flush threshold is 50,000 vectors. For a quick manual demo, start Docker with `VECSCALE_SEGMENT_FLUSH_THRESHOLD=2` as shown above.
 
 ## 7. Search Through Coordinator
@@ -194,6 +203,14 @@ $body = @{
 } | ConvertTo-Json -Depth 5
 
 Invoke-RestMethod -Method Post -Uri http://127.0.0.1:8000/search -Body $body -ContentType "application/json"
+```
+
+Expected:
+
+```text
+ids contains the inserted ID
+distances contains 0.0 for the exact match
+incomplete is False
 ```
 
 Search with a trace ID:

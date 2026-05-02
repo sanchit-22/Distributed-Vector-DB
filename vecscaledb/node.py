@@ -52,14 +52,23 @@ attach_observability(app, settings, logger, lambda: _metrics_gauges())
 async def insert(req: InsertRequest) -> dict:
     """Insert vectors after appending them to the WAL."""
     active_engine = _require_engine()
-    vectors = np.ascontiguousarray(np.array(req.vectors, dtype=np.float32))
+    try:
+        vectors = np.ascontiguousarray(np.array(req.vectors, dtype=np.float32))
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Expected vectors with shape [N, {settings.dim}].",
+        ) from exc
     ids = np.ascontiguousarray(np.array(req.ids, dtype=np.int64))
 
     if vectors.ndim != 2 or vectors.shape[1] != settings.dim:
         got = vectors.shape[1] if vectors.ndim == 2 else "invalid"
-        return {"error": f"Expected dim={settings.dim}, got {got}"}
+        raise HTTPException(
+            status_code=400,
+            detail=f"Expected vectors with shape [N, {settings.dim}], got {got}.",
+        )
     if len(ids) != len(vectors):
-        return {"error": "len(ids) != len(vectors)"}
+        raise HTTPException(status_code=400, detail="len(ids) != len(vectors)")
 
     result = await active_engine.insert(ids, vectors)
     health = await active_engine.health()

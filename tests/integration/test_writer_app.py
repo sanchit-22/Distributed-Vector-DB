@@ -90,6 +90,18 @@ def test_writer_rejects_bad_dimension(writer_client):
     assert "Expected vectors" in resp.json()["detail"]
 
 
+def test_writer_rejects_ragged_vectors(writer_client):
+    client, _, _ = writer_client
+
+    resp = client.post(
+        "/insert",
+        json={"ids": [1, 2], "vectors": [[1.0] * DIM, [1.0, 2.0]]},
+    )
+
+    assert resp.status_code == 400
+    assert "Expected vectors" in resp.json()["detail"]
+
+
 def test_writer_delete_endpoint_hides_memtable_row(writer_client):
     client, pipeline, _ = writer_client
     vectors = np.eye(DIM, dtype=np.float32)[:2]
