@@ -77,6 +77,10 @@ class Segment:
         # Persist
         idx.save(os.path.join(seg_dir, "index.faiss"))
         np.save(os.path.join(seg_dir, "ids.npy"), ids)
+        np.save(
+            os.path.join(seg_dir, "vectors.npy"),
+            np.ascontiguousarray(vectors, dtype=np.float32),
+        )
 
         meta = SegmentMeta(
             segment_id=segment_id,
@@ -124,6 +128,17 @@ class Segment:
     ) -> tuple[np.ndarray, np.ndarray]:
         """Search this segment, returning ``(distances, ids)``."""
         return self._index.search(query, top_k, nprobe)
+
+    def load_arrays(self) -> tuple[np.ndarray, np.ndarray]:
+        """Load persisted ``(ids, vectors)`` arrays for segment merge."""
+        ids = np.load(os.path.join(self.path, "ids.npy"))
+        vectors_path = os.path.join(self.path, "vectors.npy")
+        if not os.path.isfile(vectors_path):
+            raise FileNotFoundError(
+                f"Segment {self.segment_id} is missing vectors.npy and cannot be merged."
+            )
+        vectors = np.load(vectors_path)
+        return ids.astype(np.int64), np.ascontiguousarray(vectors, dtype=np.float32)
 
     @property
     def ntotal(self) -> int:

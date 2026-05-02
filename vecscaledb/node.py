@@ -1,250 +1,113 @@
-"""Single-node FastAPI server for Phase 1.
-
-Provides ``/insert``, ``/search``, and ``/health`` endpoints.
-Buffers vectors in a MemTable (dict) and flushes to immutable Segments.
-This module is replaced by the distributed writer/reader apps in later phases.
-"""
+"""Single-node FastAPI server backed by the Phase 2 LSM engine."""
 
 from __future__ import annotations
 
-import asyncio
-import heapq
-import os
-import uuid
 from contextlib import asynccontextmanager
 
-import faiss
 import numpy as np
-import structlog
 import uvicorn
 from fastapi import FastAPI
 
 from vecscaledb.config import Settings
-from vecscaledb.index.segment import Segment
 from vecscaledb.models import InsertRequest, SearchRequest, SearchResult
+from vecscaledb.observability import attach_observability, configure_logging
+from vecscaledb.storage.lsm import LSMEngine
 
-# ---------------------------------------------------------------------------
-# Logging
-# ---------------------------------------------------------------------------
-structlog.configure(
-    processors=[
-        structlog.processors.add_log_level,
-        structlog.processors.TimeStamper(fmt="iso"),
-        structlog.dev.ConsoleRenderer(),
-    ]
-)
-logger = structlog.get_logger()
 
-# ---------------------------------------------------------------------------
-# Global state
-# ---------------------------------------------------------------------------
 settings = Settings()
-
-# MemTable: maps vector ID → np.ndarray (1-D, float32)
-_memtable: dict[int, np.ndarray] = {}
-_memtable_lock = asyncio.Lock()
-
-# Flushed segments
-_segments: list[Segment] = []
-_segments_lock = asyncio.Lock()
-
-_next_snapshot_id: int = 0
-_snapshot_lock = asyncio.Lock()
+logger = configure_logging(settings)
+engine: LSMEngine | None = None
 
 
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
-def _memtable_search(query: np.ndarray, top_k: int) -> tuple[np.ndarray, np.ndarray]:
-    """Brute-force search over the current MemTable using ``IndexFlatL2``."""
-    if not _memtable:
-        return np.array([], dtype=np.float32), np.array([], dtype=np.int64)
-
-    ids = np.array(list(_memtable.keys()), dtype=np.int64)
-    vecs = np.array(list(_memtable.values()), dtype=np.float32)
-    vecs = np.ascontiguousarray(vecs)
-
-    idx = faiss.IndexFlatL2(settings.dim)
-    idx_map = faiss.IndexIDMap2(idx)
-    idx_map.add_with_ids(vecs, ids)
-
-    query_2d = np.ascontiguousarray(query.reshape(1, -1), dtype=np.float32)
-    k = min(top_k, idx_map.ntotal)
-    if k == 0:
-        return np.array([], dtype=np.float32), np.array([], dtype=np.int64)
-    distances, result_ids = idx_map.search(query_2d, k)
-    distances = distances[0]
-    result_ids = result_ids[0]
-    mask = result_ids >= 0
-    return distances[mask], result_ids[mask]
-
-
-def _merge_results(
-    results: list[tuple[np.ndarray, np.ndarray]], top_k: int
-) -> tuple[list[int], list[float]]:
-    """Merge multiple ``(distances, ids)`` result lists, deduplicate, return top-k."""
-    seen: dict[int, float] = {}
-    for distances, ids in results:
-        for d, i in zip(distances.tolist(), ids.tolist()):
-            i_int = int(i)
-            if i_int not in seen or d < seen[i_int]:
-                seen[i_int] = d
-
-    top = heapq.nsmallest(top_k, seen.items(), key=lambda x: x[1])
-    if not top:
-        return [], []
-    result_ids, result_dists = zip(*top)
-    return list(result_ids), list(result_dists)
-
-
-async def _flush() -> None:
-    """Flush the current MemTable to a new immutable Segment."""
-    global _next_snapshot_id
-
-    async with _memtable_lock:
-        if not _memtable:
-            return
-        ids = np.array(list(_memtable.keys()), dtype=np.int64)
-        vecs = np.array(list(_memtable.values()), dtype=np.float32)
-        _memtable.clear()
-
-    async with _snapshot_lock:
-        snapshot_id = _next_snapshot_id
-        _next_snapshot_id += 1
-
-    base_path = os.path.join(settings.shared_storage_path, "segments")
-
-    # Offload CPU-heavy segment creation to a thread
-    loop = asyncio.get_event_loop()
-    segment = await loop.run_in_executor(
-        None,
-        Segment.create,
-        0,              # shard_id
-        snapshot_id,
-        vecs,
-        ids,
-        settings.dim,
-        settings.nlist,
-        base_path,
+def create_engine() -> LSMEngine:
+    return LSMEngine(
+        shared_storage=settings.shared_storage_path,
+        wal_path=settings.wal_path,
+        shard_id=0,
+        dim=settings.dim,
+        nlist=settings.nlist,
+        flush_threshold=settings.segment_flush_threshold,
+        merge_threshold=settings.segment_merge_threshold,
     )
 
-    async with _segments_lock:
-        _segments.append(segment)
-
-    logger.info(
-        "segment.flushed",
-        segment_id=segment.segment_id,
-        num_vectors=segment.ntotal,
-        snapshot_id=snapshot_id,
-    )
-
-
-def _load_existing_segments() -> None:
-    """Load any existing segments from shared storage on startup."""
-    base_path = os.path.join(settings.shared_storage_path, "segments")
-    if not os.path.isdir(base_path):
-        return
-    for entry in sorted(os.listdir(base_path)):
-        seg_dir = os.path.join(base_path, entry)
-        if os.path.isfile(os.path.join(seg_dir, "meta.json")):
-            seg = Segment.load(seg_dir)
-            _segments.append(seg)
-            logger.info("segment.loaded", segment_id=seg.segment_id)
-
-
-# ---------------------------------------------------------------------------
-# FastAPI app
-# ---------------------------------------------------------------------------
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Load existing segments on startup; flush memtable on shutdown."""
-    _load_existing_segments()
-    logger.info("node.started", segments=len(_segments))
+    """Start the WAL-backed engine and flush cleanly on shutdown."""
+    global engine
+    engine = create_engine()
+    await engine.start()
+    logger.info("node.started", **await engine.health())
     yield
-    # Graceful shutdown: flush any remaining memtable data
-    if _memtable:
-        await _flush()
-    logger.info("node.stopped")
+    if engine is not None:
+        await engine.stop()
+        logger.info("node.stopped")
 
 
-app = FastAPI(title="VecScaleDB — Single Node", lifespan=lifespan)
+app = FastAPI(title="VecScaleDB - Single Node", lifespan=lifespan)
+attach_observability(app, settings, logger, lambda: _metrics_gauges())
 
 
 @app.post("/insert")
 async def insert(req: InsertRequest) -> dict:
-    """Buffer vectors in the MemTable; flush to Segment when threshold is reached."""
-    vectors = np.array(req.vectors, dtype=np.float32)
-    ids = np.array(req.ids, dtype=np.int64)
+    """Insert vectors after appending them to the WAL."""
+    active_engine = _require_engine()
+    vectors = np.ascontiguousarray(np.array(req.vectors, dtype=np.float32))
+    ids = np.ascontiguousarray(np.array(req.ids, dtype=np.int64))
 
-    if vectors.shape[1] != settings.dim:
-        return {"error": f"Expected dim={settings.dim}, got {vectors.shape[1]}"}
+    if vectors.ndim != 2 or vectors.shape[1] != settings.dim:
+        got = vectors.shape[1] if vectors.ndim == 2 else "invalid"
+        return {"error": f"Expected dim={settings.dim}, got {got}"}
     if len(ids) != len(vectors):
         return {"error": "len(ids) != len(vectors)"}
 
-    flushed = False
-    async with _memtable_lock:
-        for i, vid in enumerate(ids):
-            _memtable[int(vid)] = vectors[i]
-
-        if len(_memtable) >= settings.segment_flush_threshold:
-            # Release lock, then flush
-            pass
-
-    if len(_memtable) >= settings.segment_flush_threshold:
-        await _flush()
-        flushed = True
-
-    total = sum(s.ntotal for s in _segments) + len(_memtable)
-    return {"inserted": len(ids), "segment_flushed": flushed, "ntotal": total}
+    result = await active_engine.insert(ids, vectors)
+    health = await active_engine.health()
+    return {
+        "inserted": len(ids),
+        "segment_flushed": result["segment_flushed"],
+        "ntotal": health["ntotal"],
+        "lsn": result["lsn"],
+    }
 
 
 @app.post("/search")
 async def search(req: SearchRequest) -> SearchResult:
-    """Search across all segments + memtable, merge results."""
-    query = np.array(req.query, dtype=np.float32)
-    results: list[tuple[np.ndarray, np.ndarray]] = []
-
-    # Search flushed segments
-    async with _segments_lock:
-        segments_snapshot = list(_segments)
-
-    loop = asyncio.get_event_loop()
-    for seg in segments_snapshot:
-        try:
-            d, i = await loop.run_in_executor(
-                None, seg.search, query, req.top_k, req.nprobe
-            )
-            results.append((d, i))
-        except Exception:
-            # Skip empty or broken segments
-            pass
-
-    # Search memtable
-    async with _memtable_lock:
-        d, i = _memtable_search(query, req.top_k)
-    if len(d) > 0:
-        results.append((d, i))
-
-    merged_ids, merged_dists = _merge_results(results, req.top_k)
-    return SearchResult(ids=merged_ids, distances=merged_dists)
+    """Search a stable snapshot across visible segments and MemTable rows."""
+    active_engine = _require_engine()
+    query = np.ascontiguousarray(np.array(req.query, dtype=np.float32))
+    ids, distances = await active_engine.search(
+        query=query,
+        top_k=req.top_k,
+        nprobe=req.nprobe,
+    )
+    return SearchResult(ids=ids, distances=distances)
 
 
 @app.get("/health")
 async def health() -> dict:
-    total = sum(s.ntotal for s in _segments) + len(_memtable)
+    active_engine = _require_engine()
+    engine_health = await active_engine.health()
+    return {"status": "ok", **engine_health}
+
+
+def _require_engine() -> LSMEngine:
+    if engine is None:
+        raise RuntimeError("LSM engine is not started.")
+    return engine
+
+
+async def _metrics_gauges() -> dict:
+    if engine is None:
+        return {"wal_lsn": 0, "segments_loaded": 0}
+    health_data = await engine.health()
     return {
-        "status": "ok",
-        "ntotal": total,
-        "segments": len(_segments),
-        "memtable_size": len(_memtable),
+        "wal_lsn": health_data.get("wal_lsn", 0),
+        "segments_loaded": health_data.get("segments", 0),
+        "memtable_size": health_data.get("memtable_size", 0),
+        "active_snapshots": health_data.get("active_snapshots", 0),
     }
 
-
-# ---------------------------------------------------------------------------
-# Entry-point
-# ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
     uvicorn.run(

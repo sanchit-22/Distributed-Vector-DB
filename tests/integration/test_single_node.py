@@ -22,19 +22,16 @@ def reset_node_state(monkeypatch, tmp_path):
     monkeypatch.setenv("VECSCALE_NPROBE", str(NLIST))
     monkeypatch.setenv("VECSCALE_SEGMENT_FLUSH_THRESHOLD", str(N + 1))  # no auto-flush
     monkeypatch.setenv("VECSCALE_SHARED_STORAGE_PATH", str(tmp_path / "storage"))
+    monkeypatch.setenv("VECSCALE_WAL_PATH", str(tmp_path / "wal"))
 
     # Re-import to pick up monkeypatched env
     import importlib
     import vecscaledb.node as node_mod
 
-    # Reset module-level state
-    node_mod._memtable.clear()
-    node_mod._segments.clear()
-    node_mod._next_snapshot_id = 0
-
     # Reload settings
     from vecscaledb.config import Settings
     node_mod.settings = Settings()
+    node_mod.engine = None
 
     yield node_mod
 
@@ -114,7 +111,8 @@ class TestSingleNode:
 
     def test_insert_triggers_flush(self, client, random_data, reset_node_state):
         """Insert more than flush threshold → should create a segment."""
-        reset_node_state.settings.segment_flush_threshold = 1000
+        reset_node_state.engine.flush_threshold = 1000
+        reset_node_state.engine.memtable.flush_threshold = 1000
         vectors, ids = random_data
 
         # Insert 2000 vectors (above threshold of 1000)
@@ -128,3 +126,28 @@ class TestSingleNode:
 
         health = client.get("/health").json()
         assert health["ntotal"] >= 2000
+
+    def test_restart_recovers_unflushed_wal(self, client, random_data, reset_node_state):
+        vectors, ids = random_data
+        client.post(
+            "/insert",
+            json={"ids": ids[:100], "vectors": vectors[:100].tolist()},
+        )
+
+        from vecscaledb.node import create_engine
+
+        reset_node_state.engine.wal.close()
+        recovered = create_engine()
+        import asyncio
+
+        asyncio.run(recovered.start())
+        reset_node_state.engine = recovered
+
+        health = client.get("/health").json()
+        assert health["ntotal"] == 100
+
+        resp = client.post(
+            "/search",
+            json={"query": vectors[42].tolist(), "top_k": 1, "nprobe": NLIST},
+        )
+        assert resp.json()["ids"][0] == 42

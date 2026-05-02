@@ -1,9 +1,17 @@
 version: "3.9"
 services:
   etcd:
-    image: bitnami/etcd:3.5
-    environment:
-      ALLOW_NONE_AUTHENTICATION: "yes"
+    image: quay.io/coreos/etcd:v3.5.12
+    command:
+      - /usr/local/bin/etcd
+      - --name=etcd-0
+      - --listen-client-urls=http://0.0.0.0:2379
+      - --advertise-client-urls=http://etcd:2379
+      - --listen-peer-urls=http://0.0.0.0:2380
+      - --initial-advertise-peer-urls=http://etcd:2380
+      - --initial-cluster=etcd-0=http://etcd:2380
+      - --initial-cluster-state=new
+      - --initial-cluster-token=vecscaledb
     ports: ["2379:2379"]
 
   coordinator-0:
@@ -12,8 +20,33 @@ services:
     environment:
       VECSCALE_NODE_ROLE: coordinator
       VECSCALE_NODE_ID: coordinator-0
+      VECSCALE_SEARCH_FANOUT_MODE: replicated
     depends_on: [etcd]
     ports: ["8000:8000"]
+    volumes:
+      - ./shared_storage:/shared_storage
+
+  coordinator-1:
+    build: .
+    command: python -m vecscaledb.coordinator.app
+    environment:
+      VECSCALE_NODE_ROLE: coordinator
+      VECSCALE_NODE_ID: coordinator-1
+      VECSCALE_SEARCH_FANOUT_MODE: replicated
+    depends_on: [etcd]
+    ports: ["8001:8000"]
+    volumes:
+      - ./shared_storage:/shared_storage
+
+  coordinator-2:
+    build: .
+    command: python -m vecscaledb.coordinator.app
+    environment:
+      VECSCALE_NODE_ROLE: coordinator
+      VECSCALE_NODE_ID: coordinator-2
+      VECSCALE_SEARCH_FANOUT_MODE: replicated
+    depends_on: [etcd]
+    ports: ["8002:8000"]
     volumes:
       - ./shared_storage:/shared_storage
 
@@ -23,6 +56,8 @@ services:
     environment:
       VECSCALE_NODE_ROLE: writer
       VECSCALE_NODE_ID: writer-0
+      VECSCALE_COORDINATOR_URLS: '["http://coordinator-0:8000","http://coordinator-1:8000","http://coordinator-2:8000"]'
+      VECSCALE_SEGMENT_MERGE_THRESHOLD: "1000"
     depends_on: [coordinator-0]
     ports: ["8100:8100"]
     volumes:
@@ -35,57 +70,101 @@ services:
     environment:
       VECSCALE_NODE_ROLE: reader
       VECSCALE_NODE_ID: reader-0
+      VECSCALE_COORDINATOR_URLS: '["http://coordinator-0:8000","http://coordinator-1:8000","http://coordinator-2:8000"]'
       VECSCALE_READER_SHARD_ID: "0"
+      VECSCALE_READER_LOAD_ALL_SHARDS: "true"
+      VECSCALE_READER_MAX_SEGMENTS_IN_MEMORY: "64"
     depends_on: [coordinator-0]
     ports: ["8200:8200"]
     volumes:
       - ./shared_storage:/shared_storage
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8200/ready', timeout=2).read()"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 20s
 
-  # --- Additional readers (uncomment in Phase 6) ---
-  # reader-1:
-  #   build: .
-  #   command: python -m vecscaledb.reader.app
-  #   environment:
-  #     VECSCALE_NODE_ROLE: reader
-  #     VECSCALE_NODE_ID: reader-1
-  #     VECSCALE_READER_SHARD_ID: "1"
-  #   depends_on: [coordinator-0]
-  #   ports: ["8201:8200"]
-  #   volumes:
-  #     - ./shared_storage:/shared_storage
+  reader-1:
+    build: .
+    command: python -m vecscaledb.reader.app
+    environment:
+      VECSCALE_NODE_ROLE: reader
+      VECSCALE_NODE_ID: reader-1
+      VECSCALE_COORDINATOR_URLS: '["http://coordinator-0:8000","http://coordinator-1:8000","http://coordinator-2:8000"]'
+      VECSCALE_READER_SHARD_ID: "1"
+      VECSCALE_READER_LOAD_ALL_SHARDS: "true"
+      VECSCALE_READER_MAX_SEGMENTS_IN_MEMORY: "64"
+    depends_on: [coordinator-0]
+    ports: ["8201:8200"]
+    volumes:
+      - ./shared_storage:/shared_storage
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8200/ready', timeout=2).read()"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 20s
 
-  # reader-2:
-  #   build: .
-  #   command: python -m vecscaledb.reader.app
-  #   environment:
-  #     VECSCALE_NODE_ROLE: reader
-  #     VECSCALE_NODE_ID: reader-2
-  #     VECSCALE_READER_SHARD_ID: "2"
-  #   depends_on: [coordinator-0]
-  #   ports: ["8202:8200"]
-  #   volumes:
-  #     - ./shared_storage:/shared_storage
+  reader-2:
+    build: .
+    command: python -m vecscaledb.reader.app
+    environment:
+      VECSCALE_NODE_ROLE: reader
+      VECSCALE_NODE_ID: reader-2
+      VECSCALE_COORDINATOR_URLS: '["http://coordinator-0:8000","http://coordinator-1:8000","http://coordinator-2:8000"]'
+      VECSCALE_READER_SHARD_ID: "2"
+      VECSCALE_READER_LOAD_ALL_SHARDS: "true"
+      VECSCALE_READER_MAX_SEGMENTS_IN_MEMORY: "64"
+    depends_on: [coordinator-0]
+    ports: ["8202:8200"]
+    volumes:
+      - ./shared_storage:/shared_storage
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8200/ready', timeout=2).read()"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 20s
 
-  # reader-3:
-  #   build: .
-  #   command: python -m vecscaledb.reader.app
-  #   environment:
-  #     VECSCALE_NODE_ROLE: reader
-  #     VECSCALE_NODE_ID: reader-3
-  #     VECSCALE_READER_SHARD_ID: "3"
-  #   depends_on: [coordinator-0]
-  #   ports: ["8203:8200"]
-  #   volumes:
-  #     - ./shared_storage:/shared_storage
+  reader-3:
+    build: .
+    command: python -m vecscaledb.reader.app
+    environment:
+      VECSCALE_NODE_ROLE: reader
+      VECSCALE_NODE_ID: reader-3
+      VECSCALE_COORDINATOR_URLS: '["http://coordinator-0:8000","http://coordinator-1:8000","http://coordinator-2:8000"]'
+      VECSCALE_READER_SHARD_ID: "3"
+      VECSCALE_READER_LOAD_ALL_SHARDS: "true"
+      VECSCALE_READER_MAX_SEGMENTS_IN_MEMORY: "64"
+    depends_on: [coordinator-0]
+    ports: ["8203:8200"]
+    volumes:
+      - ./shared_storage:/shared_storage
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8200/ready', timeout=2).read()"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 20s
 
-  # reader-4:
-  #   build: .
-  #   command: python -m vecscaledb.reader.app
-  #   environment:
-  #     VECSCALE_NODE_ROLE: reader
-  #     VECSCALE_NODE_ID: reader-4
-  #     VECSCALE_READER_SHARD_ID: "4"
-  #   depends_on: [coordinator-0]
-  #   ports: ["8204:8200"]
-  #   volumes:
-  #     - ./shared_storage:/shared_storage
+  reader-4:
+    build: .
+    command: python -m vecscaledb.reader.app
+    environment:
+      VECSCALE_NODE_ROLE: reader
+      VECSCALE_NODE_ID: reader-4
+      VECSCALE_COORDINATOR_URLS: '["http://coordinator-0:8000","http://coordinator-1:8000","http://coordinator-2:8000"]'
+      VECSCALE_READER_SHARD_ID: "4"
+      VECSCALE_READER_LOAD_ALL_SHARDS: "true"
+      VECSCALE_READER_MAX_SEGMENTS_IN_MEMORY: "64"
+    depends_on: [coordinator-0]
+    ports: ["8204:8200"]
+    volumes:
+      - ./shared_storage:/shared_storage
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8200/ready', timeout=2).read()"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 20s

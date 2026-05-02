@@ -6,6 +6,10 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     node_role: str = "reader"  # coordinator | writer | reader
     node_id: str = "node-0"
+    reader_shard_id: int = 0
+    reader_load_all_shards: bool = False
+    reader_max_segments_in_memory: int = 20
+    search_fanout_mode: str = "scatter"  # scatter | replicated
     coordinator_urls: list[str] = ["http://coordinator-0:8000"]
     writer_url: str = "http://writer-0:8100"
     shared_storage_path: str = "/shared_storage"

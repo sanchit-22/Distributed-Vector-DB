@@ -1,0 +1,10 @@
+.git
+.venv
+.pytest_cache
+__pycache__
+*.pyc
+pytest-cache-files-*
+shared_storage
+wal
+data/sift1m
+data/sift10k

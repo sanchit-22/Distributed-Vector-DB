@@ -6,6 +6,8 @@ numpy==1.26.*
 pydantic==2.7.*
 pydantic-settings==2.2.*
 structlog==24.*
+etcd3==0.12.*
+protobuf==3.20.*
 pytest==8.*
 pytest-asyncio==0.23.*
 h5py==3.11.*

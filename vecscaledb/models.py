@@ -14,6 +14,14 @@ class SearchRequest(BaseModel):
     nprobe: int = 32
 
 
+class ReaderSearchRequest(SearchRequest):
+    snapshot_id: int = 0
+
+
+class DeleteRequest(BaseModel):
+    ids: list[int]
+
+
 class SearchResult(BaseModel):
     ids: list[int]
     distances: list[float]
