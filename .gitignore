@@ -40,3 +40,4 @@ wal/
 
 # Notebook checkpoints
 .ipynb_checkpoints/
+docs/

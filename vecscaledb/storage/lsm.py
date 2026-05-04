@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import heapq
+import json
 import os
 import shutil
 from dataclasses import dataclass
@@ -170,10 +171,12 @@ class LSMEngine:
         self.flush_threshold = flush_threshold
         self.merge_threshold = merge_threshold
         self.segments_path = os.path.join(shared_storage, "segments")
+        self._tombstone_path = os.path.join(shared_storage, "tombstones.json")
         self.wal = WAL(wal_path, dim)
         self.memtable = MemTable(dim, flush_threshold)
         self.snapshots = SnapshotManager()
         self._segments: list[Segment] = []
+        self._tombstones: set[int] = set()
         self._lock = asyncio.Lock()
         self._started = False
 
@@ -181,6 +184,7 @@ class LSMEngine:
         async with self._lock:
             self.wal.open()
             self._segments = self._load_existing_segments()
+            self._tombstones = self._load_tombstones()
             max_segment_lsn = max((seg.snapshot_id for seg in self._segments), default=0)
             self.memtable.clear()
             for record in self.wal.recover():
@@ -190,6 +194,7 @@ class LSMEngine:
                     self.memtable.insert(record.ids, record.vectors, record.lsn)
                 elif record.op_type == OP_DELETE:
                     self.memtable.delete(record.ids, record.lsn)
+                    self._tombstones.update(int(i) for i in record.ids.tolist())
             self._started = True
 
     async def stop(self) -> None:
@@ -209,6 +214,12 @@ class LSMEngine:
         async with self._lock:
             lsn = self.wal.append(OP_INSERT, ids, vectors)
             self.memtable.insert(ids, vectors, lsn)
+            # Clear tombstones for re-inserted IDs
+            inserted_ids = set(int(i) for i in ids.tolist())
+            removed_tombstones = self._tombstones & inserted_ids
+            if removed_tombstones:
+                self._tombstones -= removed_tombstones
+                self._persist_tombstones()
             should_flush = self.memtable.should_flush()
 
         flushed = False
@@ -223,11 +234,18 @@ class LSMEngine:
         async with self._lock:
             lsn = self.wal.append(OP_DELETE, ids, vectors)
             self.memtable.delete(ids, lsn)
+            self._tombstones.update(int(i) for i in ids.tolist())
+            self._persist_tombstones()
             return lsn
 
     async def flush(self) -> Segment | None:
         self._ensure_started()
         async with self._lock:
+            # Capture memtable deletes into persistent tombstones before clearing
+            mem_deletes = self.memtable.visible_deleted_ids()
+            if mem_deletes:
+                self._tombstones.update(mem_deletes)
+                self._persist_tombstones()
             ids, vectors = self.memtable.to_arrays()
             snapshot_id = self.memtable.max_lsn
             if len(ids) == 0 or snapshot_id == 0:
@@ -277,11 +295,26 @@ class LSMEngine:
                     np.ascontiguousarray(vector, dtype=np.float32),
                 )
 
+        # Remove tombstoned IDs during merge (physical cleanup)
+        async with self._lock:
+            current_tombstones = set(self._tombstones)
+
+        cleaned_tombstones: set[int] = set()
         for vector_id in sorted(latest):
+            if int(vector_id) in current_tombstones:
+                cleaned_tombstones.add(int(vector_id))
+                continue
             ids_list.append(np.array([vector_id], dtype=np.int64))
             vectors_list.append(latest[vector_id][1].reshape(1, -1))
 
         if not ids_list:
+            # All vectors were tombstoned — remove old segments, clear tombstones
+            async with self._lock:
+                self._segments = list(remaining)
+                self._tombstones -= cleaned_tombstones
+                self._persist_tombstones()
+            for segment in to_merge:
+                shutil.rmtree(segment.path, ignore_errors=True)
             return None
 
         merged_ids = np.concatenate(ids_list).astype(np.int64)
@@ -304,6 +337,9 @@ class LSMEngine:
         async with self._lock:
             self._segments = [merged, *remaining]
             self._segments.sort(key=lambda seg: (seg.snapshot_id, seg.segment_id))
+            # Clear tombstones that were physically removed during merge
+            self._tombstones -= cleaned_tombstones
+            self._persist_tombstones()
 
         for segment in to_merge:
             shutil.rmtree(segment.path, ignore_errors=True)
@@ -329,7 +365,7 @@ class LSMEngine:
                 snapshot_id, list(self._segments)
             )
             memtable_result = self.memtable.search(query, top_k, snapshot_id)
-            deleted_ids = self.memtable.visible_deleted_ids(snapshot_id)
+            deleted_ids = self.memtable.visible_deleted_ids(snapshot_id) | self._tombstones
 
         try:
             loop = asyncio.get_event_loop()
@@ -383,6 +419,22 @@ class LSMEngine:
                     segments.append(segment)
         segments.sort(key=lambda seg: (seg.snapshot_id, seg.segment_id))
         return segments
+
+    def _load_tombstones(self) -> set[int]:
+        """Load the persisted tombstone set from shared storage."""
+        if not os.path.isfile(self._tombstone_path):
+            return set()
+        try:
+            with open(self._tombstone_path) as f:
+                return set(json.load(f))
+        except (json.JSONDecodeError, ValueError):
+            return set()
+
+    def _persist_tombstones(self) -> None:
+        """Persist the current tombstone set to shared storage."""
+        os.makedirs(os.path.dirname(self._tombstone_path), exist_ok=True)
+        with open(self._tombstone_path, "w") as f:
+            json.dump(sorted(self._tombstones), f)
 
     def _ensure_started(self) -> None:
         if not self._started:

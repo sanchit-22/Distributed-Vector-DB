@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     segment_flush_threshold: int = 50_000  # vectors before flush
     segment_merge_threshold: int = 4  # segments before merge
     snapshot_ttl_seconds: int = 60
+    num_shards: int = 1  # number of shards for scatter-gather
 
     class Config:
         env_prefix = "VECSCALE_"

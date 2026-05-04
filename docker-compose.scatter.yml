@@ -1,0 +1,48 @@
+# Scatter-gather mode override.
+# Usage: docker compose -f docker-compose.yml -f docker-compose.scatter.yml up
+#
+# In scatter mode each reader loads ONLY its own shard and the coordinator
+# fans every search query out to ALL readers, merging partial results.
+# This validates that adding readers reduces per-node work.
+
+services:
+  writer-0:
+    environment:
+      VECSCALE_NUM_SHARDS: "5"
+
+  reader-0:
+    environment:
+      VECSCALE_READER_LOAD_ALL_SHARDS: "false"
+      VECSCALE_SEARCH_FANOUT_MODE: "scatter"
+
+  reader-1:
+    environment:
+      VECSCALE_READER_LOAD_ALL_SHARDS: "false"
+      VECSCALE_SEARCH_FANOUT_MODE: "scatter"
+
+  reader-2:
+    environment:
+      VECSCALE_READER_LOAD_ALL_SHARDS: "false"
+      VECSCALE_SEARCH_FANOUT_MODE: "scatter"
+
+  reader-3:
+    environment:
+      VECSCALE_READER_LOAD_ALL_SHARDS: "false"
+      VECSCALE_SEARCH_FANOUT_MODE: "scatter"
+
+  reader-4:
+    environment:
+      VECSCALE_READER_LOAD_ALL_SHARDS: "false"
+      VECSCALE_SEARCH_FANOUT_MODE: "scatter"
+
+  coordinator-0:
+    environment:
+      VECSCALE_SEARCH_FANOUT_MODE: "scatter"
+
+  coordinator-1:
+    environment:
+      VECSCALE_SEARCH_FANOUT_MODE: "scatter"
+
+  coordinator-2:
+    environment:
+      VECSCALE_SEARCH_FANOUT_MODE: "scatter"

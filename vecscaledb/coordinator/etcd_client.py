@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 import asyncio
+import time
 from collections.abc import AsyncIterator, Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 
@@ -12,6 +13,20 @@ from typing import Any
 class _MemoryStore:
     values: dict[str, str]
     leader: dict[str, str]
+    ttls: dict[str, float] = field(default_factory=dict)
+
+    def _prune_expired(self) -> None:
+        """Remove keys whose TTL has expired."""
+        now = time.monotonic()
+        expired = [key for key, expiry in self.ttls.items() if now >= expiry]
+        for key in expired:
+            self.values.pop(key, None)
+            self.ttls.pop(key, None)
+            # If a leader election key expired, clear the leader record too
+            for election_name, leader_val in list(self.leader.items()):
+                election_key = f"/vecscaledb/elections/{election_name}"
+                if key == election_key:
+                    self.leader.pop(election_name, None)
 
 
 _GLOBAL_MEMORY_STORE = _MemoryStore(values={}, leader={})
@@ -37,6 +52,10 @@ class EtcdClient:
     async def put(self, key: str, value: str, ttl: int | None = None) -> None:
         if self.backend == "memory":
             self._memory.values[key] = value
+            if ttl is not None:
+                self._memory.ttls[key] = time.monotonic() + ttl
+            else:
+                self._memory.ttls.pop(key, None)
             return
 
         def op() -> None:
@@ -47,6 +66,7 @@ class EtcdClient:
 
     async def get(self, key: str) -> str | None:
         if self.backend == "memory":
+            self._memory._prune_expired()
             return self._memory.values.get(key)
 
         def op() -> str | None:
@@ -59,6 +79,7 @@ class EtcdClient:
 
     async def get_prefix(self, prefix: str) -> dict[str, str]:
         if self.backend == "memory":
+            self._memory._prune_expired()
             return {
                 key: value
                 for key, value in sorted(self._memory.values.items())
@@ -95,8 +116,15 @@ class EtcdClient:
     async def campaign(self, election_name: str, value: str) -> bool:
         leader_key = f"/vecscaledb/elections/{election_name}"
         if self.backend == "memory":
-            self._memory.leader.setdefault(election_name, value)
+            self._memory._prune_expired()
+            # If no current leader (expired or never set), this node becomes leader
+            if election_name not in self._memory.leader:
+                self._memory.leader[election_name] = value
             self._memory.values["/vecscaledb/leader"] = self._memory.leader[election_name]
+            # Refresh the election key TTL for the current leader
+            if self._memory.leader[election_name] == value:
+                await self.put(leader_key, value, ttl=10)
+                await self.put("/vecscaledb/leader", value, ttl=10)
             return self._memory.leader[election_name] == value
 
         current = await self.get(leader_key)
@@ -118,6 +146,7 @@ class EtcdClient:
     def reset_memory(cls) -> None:
         _GLOBAL_MEMORY_STORE.values.clear()
         _GLOBAL_MEMORY_STORE.leader.clear()
+        _GLOBAL_MEMORY_STORE.ttls.clear()
 
     @staticmethod
     def _connect_etcd(endpoints: list[str]) -> Any:
