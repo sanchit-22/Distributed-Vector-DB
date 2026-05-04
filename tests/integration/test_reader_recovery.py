@@ -32,7 +32,8 @@ def _random_vectors(n: int, seed: int = 42) -> np.ndarray:
 
 def _create_test_segment(shard_id: int, snapshot_id: int, base_path: str) -> Segment:
     """Create a small test segment in shared storage."""
-    ids = np.arange(shard_id * 100, shard_id * 100 + 20, dtype=np.int64)
+    start_id = snapshot_id * 1000 + shard_id * 100
+    ids = np.arange(start_id, start_id + 20, dtype=np.int64)
     vectors = _random_vectors(20, seed=shard_id + snapshot_id)
     return Segment.create(
         shard_id=shard_id,

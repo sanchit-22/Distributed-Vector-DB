@@ -4,10 +4,8 @@ from __future__ import annotations
 
 import asyncio
 import time
-from unittest.mock import patch
 
 import pytest
-from fastapi.testclient import TestClient
 
 from vecscaledb.coordinator.etcd_client import EtcdClient, _GLOBAL_MEMORY_STORE
 

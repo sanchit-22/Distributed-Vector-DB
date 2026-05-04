@@ -55,9 +55,12 @@ async def run_benchmark(
     deadline = time.perf_counter() + duration_seconds
     latencies_ms: list[float] = []
     errors = 0
+    attempts = 0
+    incomplete_errors = 0
+    request_errors = 0
 
     async def worker(client: httpx.AsyncClient) -> None:
-        nonlocal errors
+        nonlocal attempts, errors, incomplete_errors, request_errors
         while time.perf_counter() < deadline:
             query = queries[random.randrange(queries.shape[0])]
             body = {
@@ -66,15 +69,18 @@ async def run_benchmark(
                 "nprobe": nprobe,
             }
             started = time.perf_counter()
+            attempts += 1
             try:
                 response = await client.post("/search", json=body)
                 response.raise_for_status()
                 payload = response.json()
                 if payload.get("incomplete", False):
+                    incomplete_errors += 1
                     errors += 1
                 else:
                     latencies_ms.append((time.perf_counter() - started) * 1000.0)
             except Exception:
+                request_errors += 1
                 errors += 1
 
     timeout = httpx.Timeout(10.0, connect=5.0)
@@ -89,7 +95,11 @@ async def run_benchmark(
     total_queries = len(latencies_ms)
     return {
         "total_queries": total_queries,
+        "attempts": attempts,
         "errors": errors,
+        "incomplete_errors": incomplete_errors,
+        "request_errors": request_errors,
+        "error_rate": errors / attempts if attempts > 0 else 0.0,
         "elapsed_seconds": elapsed,
         "qps": total_queries / elapsed if elapsed > 0 else 0.0,
         "p50_ms": percentile(latencies_ms, 50),
@@ -100,7 +110,8 @@ async def run_benchmark(
 
 def print_result(result: dict) -> None:
     print(
-        "total_queries={total_queries} errors={errors} "
+        "total_queries={total_queries} attempts={attempts} errors={errors} "
+        "error_rate={error_rate:.2%} "
         "elapsed={elapsed_seconds:.2f}s qps={qps:.2f} "
         "p50={p50_ms:.2f}ms p95={p95_ms:.2f}ms p99={p99_ms:.2f}ms".format(
             **result

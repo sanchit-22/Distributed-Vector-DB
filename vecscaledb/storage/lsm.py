@@ -47,6 +47,18 @@ def merge_results(
     return list(ids), list(distances)
 
 
+def filter_result_ids(
+    distances: np.ndarray,
+    ids: np.ndarray,
+    hidden_ids: set[int],
+) -> tuple[np.ndarray, np.ndarray]:
+    """Remove search hits whose IDs are hidden by deletes or newer versions."""
+    if not hidden_ids or len(ids) == 0:
+        return distances, ids
+    mask = np.array([int(vector_id) not in hidden_ids for vector_id in ids], dtype=bool)
+    return distances[mask], ids[mask]
+
+
 class MemTable:
     """In-memory write buffer with per-entry LSN visibility."""
 
@@ -253,10 +265,7 @@ class LSMEngine:
                 return None
             self.memtable.clear()
 
-        loop = asyncio.get_event_loop()
-        segment = await loop.run_in_executor(
-            None,
-            Segment.create,
+        segment = Segment.create(
             self.shard_id,
             snapshot_id,
             vectors,
@@ -321,10 +330,7 @@ class LSMEngine:
         merged_vectors = np.ascontiguousarray(np.vstack(vectors_list), dtype=np.float32)
         snapshot_id = max(seg.snapshot_id for seg in to_merge)
 
-        loop = asyncio.get_event_loop()
-        merged = await loop.run_in_executor(
-            None,
-            Segment.create,
+        merged = Segment.create(
             self.shard_id,
             snapshot_id,
             merged_vectors,
@@ -364,16 +370,23 @@ class LSMEngine:
             visible_segments = self.snapshots.visible_segments(
                 snapshot_id, list(self._segments)
             )
+            visible_mem_ids = set(self.memtable.to_arrays(snapshot_id)[0].tolist())
             memtable_result = self.memtable.search(query, top_k, snapshot_id)
             deleted_ids = self.memtable.visible_deleted_ids(snapshot_id) | self._tombstones
+            latest_segment_snapshot = self._latest_segment_snapshot_by_id(
+                visible_segments
+            )
 
         try:
-            loop = asyncio.get_event_loop()
             results = []
             for segment in visible_segments:
-                distances, ids = await loop.run_in_executor(
-                    None, segment.search, query, top_k, nprobe
-                )
+                distances, ids = segment.search(query, top_k, nprobe)
+                hidden_ids = deleted_ids | visible_mem_ids | {
+                    vector_id
+                    for vector_id, latest_snapshot in latest_segment_snapshot.items()
+                    if latest_snapshot > segment.snapshot_id
+                }
+                distances, ids = filter_result_ids(distances, ids, hidden_ids)
                 results.append((distances, ids))
             if len(memtable_result[0]) > 0:
                 results.append(memtable_result)
@@ -404,8 +417,18 @@ class LSMEngine:
             ids = np.load(os.path.join(segment.path, "ids.npy"))
             segment_ids.update(int(vector_id) for vector_id in ids.tolist())
         mem_ids = set(self.memtable.to_arrays()[0].tolist())
-        deleted_ids = self.memtable.visible_deleted_ids()
+        deleted_ids = self.memtable.visible_deleted_ids() | self._tombstones
         return len((segment_ids | mem_ids) - deleted_ids)
+
+    @staticmethod
+    def _latest_segment_snapshot_by_id(segments: list[Segment]) -> dict[int, int]:
+        latest: dict[int, int] = {}
+        for segment in segments:
+            for vector_id in segment.load_ids().tolist():
+                latest[int(vector_id)] = max(
+                    latest.get(int(vector_id), -1), segment.snapshot_id
+                )
+        return latest
 
     def _load_existing_segments(self) -> list[Segment]:
         if not os.path.isdir(self.segments_path):
@@ -426,8 +449,8 @@ class LSMEngine:
             return set()
         try:
             with open(self._tombstone_path) as f:
-                return set(json.load(f))
-        except (json.JSONDecodeError, ValueError):
+                return set(int(vector_id) for vector_id in json.load(f))
+        except (json.JSONDecodeError, TypeError, ValueError):
             return set()
 
     def _persist_tombstones(self) -> None:

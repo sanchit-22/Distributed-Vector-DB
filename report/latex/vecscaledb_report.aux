@@ -1,0 +1,79 @@
+\relax 
+\providecommand\zref@newlabel[2]{}
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Executive Summary}{3}{section.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Implementation status against proposal features.}}{3}{table.caption.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}System Architecture}{3}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Component Overview}{3}{subsection.2.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Runtime roles and responsibilities.}}{3}{table.caption.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Port Map}{4}{subsection.2.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Default port assignments in distributed Docker mode.}}{4}{table.caption.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Architecture Diagram}{4}{subsection.2.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces VecScaleDB shared-storage architecture. Coordinators maintain metadata and fan out search queries. The writer persists mutations and creates immutable segments. Readers load segments on demand for search execution.}}{4}{figure.caption.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Storage Layout}{4}{subsection.2.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Request Flows}{5}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Insert and Delete Flow}{5}{subsection.3.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Write path. WAL append happens before the mutation becomes visible, ensuring durability. Threshold-triggered flushes convert MemTable contents into immutable FAISS-backed segments. Deletes are WAL records that are immediately reflected in search via tombstone filtering.}}{5}{figure.caption.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Search Flow}{5}{subsection.3.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Search path. Queries execute against a consistent snapshot. Readers search their local FAISS segment caches and return partial top-k results that the coordinator merges into the final answer.}}{5}{figure.caption.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}WAL Recovery Flow}{6}{subsection.3.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces WAL recovery. The engine replays records newer than the latest flushed segment. Corrupt or incomplete trailing records are ignored so partial writes do not poison recovery.}}{6}{figure.caption.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Dataset Information}{6}{section.4}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Datasets used in this report.}}{6}{table.caption.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Benchmark Methodology}{6}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Measured Quantities}{6}{subsection.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Key Commands}{6}{subsection.5.2}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {1}{\ignorespaces Run full automated test suite.}}{6}{lstlisting.1}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2}{\ignorespaces Run proposal feature suite only.}}{7}{lstlisting.2}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {3}{\ignorespaces Load SIFT1M into a live distributed cluster.}}{7}{lstlisting.3}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4}{\ignorespaces Run QPS benchmark (60 s, 32 concurrent workers).}}{7}{lstlisting.4}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5}{\ignorespaces Reader scaling sweep (1–5 readers, auto-scale).}}{7}{lstlisting.5}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {6}{\ignorespaces Generate all benchmark metrics and compile report.}}{7}{lstlisting.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6}Benchmark Results}{7}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Load Throughput}{7}{subsection.6.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Dataset loading results.}}{7}{table.caption.10}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Load throughput. SIFT10K and SIFT1M use 128-dimensional float32 vectors; Deep1M uses 96-dimensional vectors and a different HDF5 layout, resulting in lower throughput in this environment.}}{8}{figure.caption.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Search Throughput and Latency}{8}{subsection.6.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Search metrics from a single benchmark run.}}{8}{table.caption.12}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Search performance across datasets. SIFT10K achieves higher QPS due to the smaller indexed corpus. SIFT1M and Deep1M are comparable.}}{8}{figure.caption.13}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Recall}{9}{subsection.6.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Recall evaluation results (nprobe=32, top-k=10).}}{9}{table.caption.14}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Reader Scaling}{9}{subsection.6.4}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces QPS scaling with 1–5 readers.}}{9}{table.caption.15}\protected@file@percent }
+\gdef \LT@i {\LT@entry 
+    {1}{130.662pt}\LT@entry 
+    {1}{320.5183pt}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Reader scaling behaviour. QPS decreases with reader count in this single-machine environment due to CPU contention, replicated search overhead, and shared-storage access pressure. SIFT1M declines from 100.50 QPS at one reader to 86.20 at five. Deep1M follows a similar trend. The architecture is correct; scaling limits are environmental.}}{10}{figure.caption.16}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7}Correctness and Feature Tests}{10}{section.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Test Suite Overview}{10}{subsection.7.1}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {7}{\ignorespaces Full and feature-only test suites.}}{10}{lstlisting.7}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces Feature tests and what they prove.}}{10}{table.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Key Feature Explanations}{11}{subsection.7.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.2.1}IVF\_FLAT Vector Search}{11}{subsubsection.7.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.2.2}WAL Durability}{11}{subsubsection.7.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.2.3}Snapshot Isolation}{11}{subsubsection.7.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.2.4}Scatter-Gather vs. Replicated Modes}{11}{subsubsection.7.2.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {8}Fault Tolerance}{12}{section.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.1}Fault-Tolerance Matrix}{12}{subsection.8.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {10}{\ignorespaces Failure scenarios and recovery mechanisms.}}{12}{table.caption.17}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.2}Manual Fault-Tolerance Commands}{12}{subsection.8.2}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {8}{\ignorespaces Reader restart check.}}{12}{lstlisting.8}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {9}{\ignorespaces Coordinator failover check.}}{12}{lstlisting.9}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {10}{\ignorespaces Writer restart check.}}{12}{lstlisting.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {9}Discussion}{12}{section.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.1}What Works}{12}{subsection.9.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.2}Observed Benchmark Behaviour}{13}{subsection.9.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.3}Known Caveats}{13}{subsection.9.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {10}Conclusion}{13}{section.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {A}Runtime Setup Reference}{13}{appendix.A}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {11}{\ignorespaces First-time setup.}}{13}{lstlisting.11}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {12}{\ignorespaces Single-node mode (insert + search on port 8000).}}{14}{lstlisting.12}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {13}{\ignorespaces Start full distributed cluster.}}{14}{lstlisting.13}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {14}{\ignorespaces Quick distributed demo (flush every 2 vectors).}}{14}{lstlisting.14}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {15}{\ignorespaces Scatter-gather shard mode.}}{14}{lstlisting.15}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {B}Key Source Paths}{14}{appendix.B}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {C}Health Check Commands}{14}{appendix.C}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {16}{\ignorespaces Health and readiness checks for all services.}}{14}{lstlisting.16}\protected@file@percent }
+\gdef \@abspage@last{14}

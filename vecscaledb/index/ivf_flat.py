@@ -34,10 +34,13 @@ class IVFFlatIndex:
         if vectors.ndim != 2 or vectors.shape[1] != self.dim:
             raise ValueError(f"Expected vectors with shape [N, {self.dim}].")
 
-        if sys.platform == "win32":
+        min_training_points = max(1, self.nlist) * 39
+        if sys.platform == "win32" or len(vectors) < min_training_points:
             # faiss-cpu 1.8.0 has a native access-violation failure in
             # IndexIVFFlat.search on Windows. Use exact flat search there so
-            # development/tests remain stable; Docker/Linux still uses IVF.
+            # development/tests remain stable; Docker/Linux still uses IVF for
+            # normally sized segments. Tiny/undertrained segments also use
+            # exact search because IVF needs enough training points per centroid.
             flat = faiss.IndexFlatL2(self.dim)
             self._index = faiss.IndexIDMap2(flat)
             self._flat = flat

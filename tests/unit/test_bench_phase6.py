@@ -65,6 +65,8 @@ def test_run_benchmark_reports_qps(monkeypatch):
     )
 
     assert result["total_queries"] > 0
+    assert result["attempts"] >= result["total_queries"]
     assert result["errors"] == 0
+    assert result["error_rate"] == 0.0
     assert result["qps"] > 0
     assert result["p99_ms"] >= result["p50_ms"]

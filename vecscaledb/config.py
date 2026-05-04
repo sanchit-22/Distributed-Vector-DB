@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     segment_merge_threshold: int = 4  # segments before merge
     snapshot_ttl_seconds: int = 60
     num_shards: int = 1  # number of shards for scatter-gather
+    coordinator_reader_timeout_seconds: float = 10.0
 
     class Config:
         env_prefix = "VECSCALE_"

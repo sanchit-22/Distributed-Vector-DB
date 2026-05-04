@@ -36,6 +36,7 @@ class Segment:
         self.path = path
         self.meta = meta
         self._index = index
+        self._ids_cache: np.ndarray | None = None
 
     # ------------------------------------------------------------------
     # Factory methods
@@ -139,6 +140,13 @@ class Segment:
             )
         vectors = np.load(vectors_path)
         return ids.astype(np.int64), np.ascontiguousarray(vectors, dtype=np.float32)
+
+    def load_ids(self) -> np.ndarray:
+        """Load persisted external IDs without loading the full vector array."""
+        if self._ids_cache is None:
+            ids = np.load(os.path.join(self.path, "ids.npy"))
+            self._ids_cache = ids.astype(np.int64)
+        return self._ids_cache
 
     @property
     def ntotal(self) -> int:

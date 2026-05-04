@@ -1,0 +1,149 @@
+{
+  "dataset": "Deep1M",
+  "dataset_key": "deep1m",
+  "path": "data/deep1m/deep1m.hdf5",
+  "dim": 96,
+  "metric": "L2",
+  "ground_truth_metric": "Angular",
+  "train_limit": 1000000,
+  "query_limit": 1000,
+  "generated_at": "2026-05-04T22:25:07.445497+00:00",
+  "notes": [
+    "Uses the first 1,000,000 train vectors from deep-image-96-angular.hdf5.",
+    "ANN-Benchmarks Deep ground truth is angular; L2 recall is skipped unless forced."
+  ],
+  "hdf5": {
+    "keys": {
+      "distances": {
+        "shape": [
+          10000,
+          100
+        ],
+        "dtype": "float32"
+      },
+      "neighbors": {
+        "shape": [
+          10000,
+          100
+        ],
+        "dtype": "int32"
+      },
+      "test": {
+        "shape": [
+          10000,
+          96
+        ],
+        "dtype": "float32"
+      },
+      "train": {
+        "shape": [
+          9990000,
+          96
+        ],
+        "dtype": "float32"
+      }
+    }
+  },
+  "load": {
+    "inserted": 1000000,
+    "elapsed_seconds": 129.65400881499227,
+    "vectors_per_second": 7712.835176789128,
+    "last_response": {
+      "lsn": 100,
+      "inserted": 10000,
+      "segment_flushed": true,
+      "ntotal": 1000000,
+      "segments": 20,
+      "wal_lsn": 100
+    }
+  },
+  "qps": {
+    "total_queries": 5334,
+    "attempts": 5334,
+    "errors": 0,
+    "incomplete_errors": 0,
+    "request_errors": 0,
+    "error_rate": 0.0,
+    "elapsed_seconds": 60.15661991199886,
+    "qps": 88.66854566966916,
+    "p50_ms": 358.5194469997077,
+    "p95_ms": 432.0137691538548,
+    "p99_ms": 501.62210200636764
+  },
+  "scaling": [
+    {
+      "total_queries": 6265,
+      "attempts": 6265,
+      "errors": 0,
+      "incomplete_errors": 0,
+      "request_errors": 0,
+      "error_rate": 0.0,
+      "elapsed_seconds": 60.13487415399868,
+      "qps": 104.18247461458115,
+      "p50_ms": 308.0040170025313,
+      "p95_ms": 422.4337966006715,
+      "p99_ms": 459.6895892795874,
+      "readers": 1
+    },
+    {
+      "total_queries": 5880,
+      "attempts": 5880,
+      "errors": 0,
+      "incomplete_errors": 0,
+      "request_errors": 0,
+      "error_rate": 0.0,
+      "elapsed_seconds": 60.15618750000431,
+      "qps": 97.74555609927206,
+      "p50_ms": 333.67617699695984,
+      "p95_ms": 415.6752721508383,
+      "p99_ms": 447.6800578515395,
+      "readers": 2
+    },
+    {
+      "total_queries": 5675,
+      "attempts": 5675,
+      "errors": 0,
+      "incomplete_errors": 0,
+      "request_errors": 0,
+      "error_rate": 0.0,
+      "elapsed_seconds": 60.12043557500874,
+      "qps": 94.39386035251916,
+      "p50_ms": 341.4682000002358,
+      "p95_ms": 418.73923159582773,
+      "p99_ms": 453.80133290309465,
+      "readers": 3
+    },
+    {
+      "total_queries": 5088,
+      "attempts": 5088,
+      "errors": 0,
+      "incomplete_errors": 0,
+      "request_errors": 0,
+      "error_rate": 0.0,
+      "elapsed_seconds": 60.119626722007524,
+      "qps": 84.63126398849505,
+      "p50_ms": 373.25315700581996,
+      "p95_ms": 496.985701091762,
+      "p99_ms": 569.4902374240339,
+      "readers": 4
+    },
+    {
+      "total_queries": 5011,
+      "attempts": 5011,
+      "errors": 0,
+      "incomplete_errors": 0,
+      "request_errors": 0,
+      "error_rate": 0.0,
+      "elapsed_seconds": 60.28537804899679,
+      "qps": 83.12131668026237,
+      "p50_ms": 382.4727830069605,
+      "p95_ms": 473.7790094950469,
+      "p99_ms": 522.3862360086056,
+      "readers": 5
+    }
+  ],
+  "recall": {
+    "skipped": true,
+    "reason": "Ground truth metric is Angular but VecScaleDB run metric is L2."
+  }
+}

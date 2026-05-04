@@ -8,7 +8,6 @@ import tempfile
 
 import numpy as np
 import pytest
-from fastapi.testclient import TestClient
 
 from vecscaledb.config import Settings
 from vecscaledb.coordinator.etcd_client import EtcdClient

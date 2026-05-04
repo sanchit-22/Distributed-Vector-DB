@@ -19,6 +19,7 @@ services:
     environment:
       VECSCALE_NODE_ROLE: coordinator
       VECSCALE_NODE_ID: coordinator-0
+      VECSCALE_DIM: "${VECSCALE_DIM:-128}"
       VECSCALE_SEARCH_FANOUT_MODE: replicated
     depends_on: [etcd]
     ports: ["8000:8000"]
@@ -31,6 +32,7 @@ services:
     environment:
       VECSCALE_NODE_ROLE: coordinator
       VECSCALE_NODE_ID: coordinator-1
+      VECSCALE_DIM: "${VECSCALE_DIM:-128}"
       VECSCALE_SEARCH_FANOUT_MODE: replicated
     depends_on: [etcd]
     ports: ["8001:8000"]
@@ -43,6 +45,7 @@ services:
     environment:
       VECSCALE_NODE_ROLE: coordinator
       VECSCALE_NODE_ID: coordinator-2
+      VECSCALE_DIM: "${VECSCALE_DIM:-128}"
       VECSCALE_SEARCH_FANOUT_MODE: replicated
     depends_on: [etcd]
     ports: ["8002:8000"]
@@ -55,6 +58,7 @@ services:
     environment:
       VECSCALE_NODE_ROLE: writer
       VECSCALE_NODE_ID: writer-0
+      VECSCALE_DIM: "${VECSCALE_DIM:-128}"
       VECSCALE_COORDINATOR_URLS: '["http://coordinator-0:8000","http://coordinator-1:8000","http://coordinator-2:8000"]'
       VECSCALE_SEGMENT_FLUSH_THRESHOLD: "${VECSCALE_SEGMENT_FLUSH_THRESHOLD:-50000}"
       VECSCALE_SEGMENT_MERGE_THRESHOLD: "1000"
@@ -70,6 +74,7 @@ services:
     environment:
       VECSCALE_NODE_ROLE: reader
       VECSCALE_NODE_ID: reader-0
+      VECSCALE_DIM: "${VECSCALE_DIM:-128}"
       VECSCALE_COORDINATOR_URLS: '["http://coordinator-0:8000","http://coordinator-1:8000","http://coordinator-2:8000"]'
       VECSCALE_READER_SHARD_ID: "0"
       VECSCALE_READER_LOAD_ALL_SHARDS: "true"
@@ -91,6 +96,7 @@ services:
     environment:
       VECSCALE_NODE_ROLE: reader
       VECSCALE_NODE_ID: reader-1
+      VECSCALE_DIM: "${VECSCALE_DIM:-128}"
       VECSCALE_COORDINATOR_URLS: '["http://coordinator-0:8000","http://coordinator-1:8000","http://coordinator-2:8000"]'
       VECSCALE_READER_SHARD_ID: "1"
       VECSCALE_READER_LOAD_ALL_SHARDS: "true"
@@ -112,6 +118,7 @@ services:
     environment:
       VECSCALE_NODE_ROLE: reader
       VECSCALE_NODE_ID: reader-2
+      VECSCALE_DIM: "${VECSCALE_DIM:-128}"
       VECSCALE_COORDINATOR_URLS: '["http://coordinator-0:8000","http://coordinator-1:8000","http://coordinator-2:8000"]'
       VECSCALE_READER_SHARD_ID: "2"
       VECSCALE_READER_LOAD_ALL_SHARDS: "true"
@@ -133,6 +140,7 @@ services:
     environment:
       VECSCALE_NODE_ROLE: reader
       VECSCALE_NODE_ID: reader-3
+      VECSCALE_DIM: "${VECSCALE_DIM:-128}"
       VECSCALE_COORDINATOR_URLS: '["http://coordinator-0:8000","http://coordinator-1:8000","http://coordinator-2:8000"]'
       VECSCALE_READER_SHARD_ID: "3"
       VECSCALE_READER_LOAD_ALL_SHARDS: "true"
@@ -154,6 +162,7 @@ services:
     environment:
       VECSCALE_NODE_ROLE: reader
       VECSCALE_NODE_ID: reader-4
+      VECSCALE_DIM: "${VECSCALE_DIM:-128}"
       VECSCALE_COORDINATOR_URLS: '["http://coordinator-0:8000","http://coordinator-1:8000","http://coordinator-2:8000"]'
       VECSCALE_READER_SHARD_ID: "4"
       VECSCALE_READER_LOAD_ALL_SHARDS: "true"

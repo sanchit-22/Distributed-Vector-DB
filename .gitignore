@@ -41,3 +41,7 @@ wal/
 # Notebook checkpoints
 .ipynb_checkpoints/
 docs/
+
+# Generated report intermediates
+report/build/
+data/deep1m/

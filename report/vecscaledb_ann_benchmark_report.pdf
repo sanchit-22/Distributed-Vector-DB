@@ -1,0 +1,1183 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [6 0 R 8 0 R 10 0 R 12 0 R 14 0 R 16 0 R] /Count 6 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+5 0 obj
+<< /Length 5376 >>
+stream
+0.100 0.270 0.480 rg
+BT /F2 24.00 Tf 48.00 772.00 Td (VecScaleDB ANN Benchmark Report) Tj ET
+0.000 0.000 0.000 rg
+BT /F2 14.00 Tf 48.00 744.00 Td (Distributed Vector Database Evaluation) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 10.00 Tf 48.00 714.00 Td (This report compares VecScaleDB against the standard ANN benchmark datasets used in the) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 10.00 Tf 48.00 700.00 Td (Milvus evaluation setup: SIFT10K, SIFT1M, and Deep1M. The focus is the Figure 10b-style QPS-) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 10.00 Tf 48.00 686.00 Td (vs-nodes experiment, with secondary metrics for latency, errors, data coverage, and) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 10.00 Tf 48.00 672.00 Td (benchmark readiness.) Tj ET
+0.000 0.000 0.000 rg
+BT /F2 11.00 Tf 48.00 642.00 Td (Generated from local workspace metrics) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 48.00 626.00 Td (Timestamp: 2026-05-04T22:57:49.697918+00:00) Tj ET
+0.940 0.960 0.980 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 584.00 190.00 22.00 re B
+1.000 1.000 1.000 rg
+0.780 0.820 0.860 RG
+1.00 w
+238.00 584.00 270.00 22.00 re B
+0.000 0.000 0.000 rg
+BT /F2 9.00 Tf 55.00 592.00 Td (System) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 245.00 592.00 Td (VecScaleDB) Tj ET
+0.940 0.960 0.980 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 562.00 190.00 22.00 re B
+1.000 1.000 1.000 rg
+0.780 0.820 0.860 RG
+1.00 w
+238.00 562.00 270.00 22.00 re B
+0.000 0.000 0.000 rg
+BT /F2 9.00 Tf 55.00 570.00 Td (Repository) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 245.00 570.00 Td (https://github.com/sanchit-22/Distributed-Vector-DB) Tj ET
+0.940 0.960 0.980 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 540.00 190.00 22.00 re B
+1.000 1.000 1.000 rg
+0.780 0.820 0.860 RG
+1.00 w
+238.00 540.00 270.00 22.00 re B
+0.000 0.000 0.000 rg
+BT /F2 9.00 Tf 55.00 548.00 Td (Team) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 245.00 548.00 Td (Deadlock and Chill) Tj ET
+0.940 0.960 0.980 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 518.00 190.00 22.00 re B
+1.000 1.000 1.000 rg
+0.780 0.820 0.860 RG
+1.00 w
+238.00 518.00 270.00 22.00 re B
+0.000 0.000 0.000 rg
+BT /F2 9.00 Tf 55.00 526.00 Td (Member) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 245.00 526.00 Td (Sanchit Kumar - 2024201042) Tj ET
+0.940 0.960 0.980 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 496.00 190.00 22.00 re B
+1.000 1.000 1.000 rg
+0.780 0.820 0.860 RG
+1.00 w
+238.00 496.00 270.00 22.00 re B
+0.000 0.000 0.000 rg
+BT /F2 9.00 Tf 55.00 504.00 Td (Member) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 245.00 504.00 Td (Priyanshu Jha - 2024201062) Tj ET
+0.940 0.960 0.980 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 474.00 190.00 22.00 re B
+1.000 1.000 1.000 rg
+0.780 0.820 0.860 RG
+1.00 w
+238.00 474.00 270.00 22.00 re B
+0.000 0.000 0.000 rg
+BT /F2 9.00 Tf 55.00 482.00 Td (Member) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 245.00 482.00 Td (Rohini Mandlekar - 2025901004) Tj ET
+0.940 0.960 0.980 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 452.00 190.00 22.00 re B
+1.000 1.000 1.000 rg
+0.780 0.820 0.860 RG
+1.00 w
+238.00 452.00 270.00 22.00 re B
+0.000 0.000 0.000 rg
+BT /F2 9.00 Tf 55.00 460.00 Td (Index) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 245.00 460.00 Td (Faiss IVF_FLAT) Tj ET
+0.940 0.960 0.980 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 430.00 190.00 22.00 re B
+1.000 1.000 1.000 rg
+0.780 0.820 0.860 RG
+1.00 w
+238.00 430.00 270.00 22.00 re B
+0.000 0.000 0.000 rg
+BT /F2 9.00 Tf 55.00 438.00 Td (Distance metric) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 245.00 438.00 Td (L2) Tj ET
+0.940 0.960 0.980 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 408.00 190.00 22.00 re B
+1.000 1.000 1.000 rg
+0.780 0.820 0.860 RG
+1.00 w
+238.00 408.00 270.00 22.00 re B
+0.000 0.000 0.000 rg
+BT /F2 9.00 Tf 55.00 416.00 Td (Primary scaling artifact) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 245.00 416.00 Td (QPS vs reader nodes) Tj ET
+0.940 0.960 0.980 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 386.00 190.00 22.00 re B
+1.000 1.000 1.000 rg
+0.780 0.820 0.860 RG
+1.00 w
+238.00 386.00 270.00 22.00 re B
+0.000 0.000 0.000 rg
+BT /F2 9.00 Tf 55.00 394.00 Td (Reader modes) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 245.00 394.00 Td (Replicated round-robin and scatter-gather) Tj ET
+0.940 0.960 0.980 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 364.00 190.00 22.00 re B
+1.000 1.000 1.000 rg
+0.780 0.820 0.860 RG
+1.00 w
+238.00 364.00 270.00 22.00 re B
+0.000 0.000 0.000 rg
+BT /F2 9.00 Tf 55.00 372.00 Td (Durability) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 245.00 372.00 Td (WAL + MemTable + immutable segments) Tj ET
+0.100 0.270 0.480 rg
+BT /F2 14.00 Tf 48.00 328.00 Td (Report contents) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 58.00 310.00 Td (-) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 70.00 310.00 Td (Dataset specification and local availability) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 58.00 297.00 Td (-) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 70.00 297.00 Td (Project architecture overview) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 58.00 284.00 Td (-) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 70.00 284.00 Td (SIFT1M QPS and latency charts from local scaling_results.json) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 58.00 271.00 Td (-) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 70.00 271.00 Td (Cross-dataset comparison framework for SIFT10K, SIFT1M, and Deep1M) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 58.00 258.00 Td (-) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 70.00 258.00 Td (Methodology and commands to regenerate missing measurements) Tj ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 5 0 R >>
+endobj
+7 0 obj
+<< /Length 6911 >>
+stream
+0.100 0.270 0.480 rg
+BT /F2 18.00 Tf 48.00 792.00 Td (Dataset Comparison) Tj ET
+0.780 0.820 0.860 RG
+1.00 w
+48.00 782.00 m 547.00 782.00 l S
+0.000 0.000 0.000 rg
+BT /F1 10.00 Tf 48.00 760.00 Td (All three datasets are public ANN benchmarks. SIFT10K is used for fast correctness and) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 10.00 Tf 48.00 746.00 Td (recall checks, SIFT1M is the primary local performance benchmark, and Deep1M is included as) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 10.00 Tf 48.00 732.00 Td (the paper-replication target when the 96-dimensional dataset is supplied locally.) Tj ET
+0.100 0.270 0.480 rg
+0.100 0.270 0.480 RG
+1.00 w
+48.00 690.00 525.00 24.00 re B
+1.000 1.000 1.000 rg
+BT /F2 8.50 Tf 53.00 699.00 Td (Dataset) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.50 Tf 128.00 699.00 Td (Vectors) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.50 Tf 198.00 699.00 Td (Dims) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.50 Tf 243.00 699.00 Td (Metric) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.50 Tf 293.00 699.00 Td (Available) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.50 Tf 358.00 699.00 Td (Role) Tj ET
+0.970 0.980 0.990 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 666.00 525.00 24.00 re B
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 53.00 676.00 Td (SIFT10K) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 128.00 676.00 Td (10,000) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 198.00 676.00 Td (128) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 243.00 676.00 Td (L2) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 293.00 676.00 Td (yes) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 358.00 676.00 Td (Unit tests and correctness checks) Tj ET
+1.000 1.000 1.000 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 642.00 525.00 24.00 re B
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 53.00 652.00 Td (SIFT1M) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 128.00 652.00 Td (1,000,000) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 198.00 652.00 Td (128) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 243.00 652.00 Td (L2) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 293.00 652.00 Td (yes) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 358.00 652.00 Td (Primary performance benchmark) Tj ET
+0.970 0.980 0.990 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 618.00 525.00 24.00 re B
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 53.00 628.00 Td (Deep1M) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 128.00 628.00 Td (1,000,000) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 198.00 628.00 Td (96) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 243.00 628.00 Td (L2) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 293.00 628.00 Td (yes) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 358.00 628.00 Td (Paper replication dataset) Tj ET
+0.100 0.270 0.480 rg
+BT /F2 11.00 Tf 48.00 586.00 Td (Dataset scale, log10\(vectors\)) Tj ET
+0.780 0.820 0.860 RG
+1.00 w
+78.00 551.00 m 78.00 406.00 l S
+0.780 0.820 0.860 RG
+1.00 w
+78.00 406.00 m 263.00 406.00 l S
+0.100 0.270 0.480 rg
+0.100 0.270 0.480 RG
+1.00 w
+96.00 406.00 36.27 96.67 re B
+0.000 0.000 0.000 rg
+BT /F1 7.00 Tf 92.00 392.00 Td (SIFT10K) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 7.00 Tf 94.00 507.67 Td (10,000) Tj ET
+0.850 0.360 0.100 rg
+0.850 0.360 0.100 RG
+1.00 w
+157.67 406.00 36.27 145.00 re B
+0.000 0.000 0.000 rg
+BT /F1 7.00 Tf 153.67 392.00 Td (SIFT1M) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 7.00 Tf 155.67 556.00 Td (1,000,000) Tj ET
+0.200 0.550 0.320 rg
+0.200 0.550 0.320 RG
+1.00 w
+219.33 406.00 36.27 145.00 re B
+0.000 0.000 0.000 rg
+BT /F1 7.00 Tf 215.33 392.00 Td (Deep1M) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 7.00 Tf 217.33 556.00 Td (1,000,000) Tj ET
+0.100 0.270 0.480 rg
+BT /F2 11.00 Tf 323.00 586.00 Td (Vector dimensions) Tj ET
+0.780 0.820 0.860 RG
+1.00 w
+353.00 551.00 m 353.00 406.00 l S
+0.780 0.820 0.860 RG
+1.00 w
+353.00 406.00 m 528.00 406.00 l S
+0.100 0.270 0.480 rg
+0.100 0.270 0.480 RG
+1.00 w
+371.00 406.00 34.31 145.00 re B
+0.000 0.000 0.000 rg
+BT /F1 7.00 Tf 367.00 392.00 Td (SIFT10K) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 7.00 Tf 375.00 556.00 Td (128) Tj ET
+0.850 0.360 0.100 rg
+0.850 0.360 0.100 RG
+1.00 w
+429.33 406.00 34.31 145.00 re B
+0.000 0.000 0.000 rg
+BT /F1 7.00 Tf 425.33 392.00 Td (SIFT1M) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 7.00 Tf 433.33 556.00 Td (128) Tj ET
+0.200 0.550 0.320 rg
+0.200 0.550 0.320 RG
+1.00 w
+487.67 406.00 34.31 108.75 re B
+0.000 0.000 0.000 rg
+BT /F1 7.00 Tf 483.67 392.00 Td (Deep1M) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 7.00 Tf 491.67 519.75 Td (96) Tj ET
+0.100 0.270 0.480 rg
+BT /F2 13.00 Tf 48.00 341.00 Td (Local dataset inspection) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 58.00 324.00 Td (-) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 70.00 324.00 Td (SIFT10K: available; path=data/sift1m/sift1m.hdf5; size=500.8 MB) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 72.00 311.00 Td (-) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 84.00 311.00 Td (distances: shape=[10000, 100], dtype=float32) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 72.00 299.00 Td (-) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 84.00 299.00 Td (neighbors: shape=[10000, 100], dtype=int32) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 72.00 287.00 Td (-) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 84.00 287.00 Td (test: shape=[10000, 128], dtype=float32) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 72.00 275.00 Td (-) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 84.00 275.00 Td (train: shape=[1000000, 128], dtype=float32) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 58.00 263.00 Td (-) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 70.00 263.00 Td (SIFT1M: available; path=data/sift1m/sift1m.hdf5; size=500.8 MB) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 72.00 250.00 Td (-) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 84.00 250.00 Td (distances: shape=[10000, 100], dtype=float32) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 72.00 238.00 Td (-) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 84.00 238.00 Td (neighbors: shape=[10000, 100], dtype=int32) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 72.00 226.00 Td (-) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 84.00 226.00 Td (test: shape=[10000, 128], dtype=float32) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 72.00 214.00 Td (-) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 84.00 214.00 Td (train: shape=[1000000, 128], dtype=float32) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 58.00 202.00 Td (-) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 70.00 202.00 Td (Deep1M: available; path=data/deep1m/deep1m.hdf5; size=3669.75 MB) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 72.00 189.00 Td (-) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 84.00 189.00 Td (distances: shape=[10000, 100], dtype=float32) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 72.00 177.00 Td (-) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 84.00 177.00 Td (neighbors: shape=[10000, 100], dtype=int32) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 72.00 165.00 Td (-) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 84.00 165.00 Td (test: shape=[10000, 96], dtype=float32) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 72.00 153.00 Td (-) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 84.00 153.00 Td (train: shape=[9990000, 96], dtype=float32) Tj ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 7 0 R >>
+endobj
+9 0 obj
+<< /Length 4684 >>
+stream
+0.100 0.270 0.480 rg
+BT /F2 18.00 Tf 48.00 792.00 Td (Project Overview) Tj ET
+0.780 0.820 0.860 RG
+1.00 w
+48.00 782.00 m 547.00 782.00 l S
+0.000 0.000 0.000 rg
+BT /F1 10.00 Tf 48.00 760.00 Td (VecScaleDB uses a writer/readers/coordinator split. Inserts go to the writer, which appends) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 10.00 Tf 48.00 746.00 Td (to the WAL, stores recent writes in a MemTable, and flushes immutable Faiss-backed segments) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 10.00 Tf 48.00 732.00 Td (to shared storage. Readers load those segments and answer search requests. Coordinators) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 10.00 Tf 48.00 718.00 Td (store metadata in etcd and route search requests.) Tj ET
+0.950 0.970 1.000 rg
+0.100 0.270 0.480 RG
+1.00 w
+48.00 630.00 155.00 58.00 re B
+0.100 0.270 0.480 rg
+BT /F2 11.00 Tf 56.00 670.00 Td (Client) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 56.00 654.00 Td (Insert/search requests) Tj ET
+0.950 0.970 1.000 rg
+0.100 0.270 0.480 RG
+1.00 w
+228.00 630.00 155.00 58.00 re B
+0.100 0.270 0.480 rg
+BT /F2 11.00 Tf 236.00 670.00 Td (Writer) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 236.00 654.00 Td (WAL, MemTable, segment) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 236.00 642.00 Td (flush) Tj ET
+0.950 0.970 1.000 rg
+0.100 0.270 0.480 RG
+1.00 w
+408.00 630.00 155.00 58.00 re B
+0.100 0.270 0.480 rg
+BT /F2 11.00 Tf 416.00 670.00 Td (Shared storage) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 416.00 654.00 Td (index.faiss, ids.npy,) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 416.00 642.00 Td (vectors.npy, meta.json) Tj ET
+0.950 0.970 1.000 rg
+0.100 0.270 0.480 RG
+1.00 w
+48.00 544.00 155.00 58.00 re B
+0.100 0.270 0.480 rg
+BT /F2 11.00 Tf 56.00 584.00 Td (Coordinator) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 56.00 568.00 Td (Node registry, segment) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 56.00 556.00 Td (metadata, routing) Tj ET
+0.950 0.970 1.000 rg
+0.100 0.270 0.480 RG
+1.00 w
+228.00 544.00 155.00 58.00 re B
+0.100 0.270 0.480 rg
+BT /F2 11.00 Tf 236.00 584.00 Td (Readers) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 236.00 568.00 Td (Segment cache and) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 236.00 556.00 Td (IVF_FLAT search) Tj ET
+0.950 0.970 1.000 rg
+0.100 0.270 0.480 RG
+1.00 w
+408.00 544.00 155.00 58.00 re B
+0.100 0.270 0.480 rg
+BT /F2 11.00 Tf 416.00 584.00 Td (etcd) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 416.00 568.00 Td (Leader, nodes, segments,) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 416.00 556.00 Td (snapshot) Tj ET
+0.250 0.250 0.250 RG
+1.00 w
+203.00 659.00 m 228.00 659.00 l S
+0.250 0.250 0.250 RG
+1.00 w
+383.00 659.00 m 408.00 659.00 l S
+0.250 0.250 0.250 RG
+1.00 w
+203.00 573.00 m 228.00 573.00 l S
+0.250 0.250 0.250 RG
+1.00 w
+383.00 573.00 m 408.00 573.00 l S
+0.100 0.270 0.480 rg
+BT /F2 13.00 Tf 48.00 458.00 Td (Feature coverage) Tj ET
+0.100 0.270 0.480 rg
+0.100 0.270 0.480 RG
+1.00 w
+48.00 428.00 515.00 24.00 re B
+1.000 1.000 1.000 rg
+BT /F2 8.50 Tf 53.00 437.00 Td (Feature) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.50 Tf 203.00 437.00 Td (Implementation) Tj ET
+0.970 0.980 0.990 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 404.00 515.00 24.00 re B
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 53.00 414.00 Td (Distributed architecture) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 203.00 414.00 Td (3 coordinators, 1 writer, 5 readers, shared storage, etcd) Tj ET
+1.000 1.000 1.000 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 380.00 515.00 24.00 re B
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 53.00 390.00 Td (Load balancing) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 203.00 390.00 Td (replicated readers receive coordinator round-robin search traffic) Tj ET
+0.970 0.980 0.990 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 356.00 515.00 24.00 re B
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 53.00 366.00 Td (Vector search) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 203.00 366.00 Td (Faiss IVF_FLAT with configurable nprobe) Tj ET
+1.000 1.000 1.000 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 332.00 515.00 24.00 re B
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 53.00 342.00 Td (Dynamic data) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 203.00 342.00 Td (insert/delete through WAL-backed writer pipeline) Tj ET
+0.970 0.980 0.990 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 308.00 515.00 24.00 re B
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 53.00 318.00 Td (Snapshot isolation) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 203.00 318.00 Td (search uses snapshot_id derived from WAL/segment LSNs) Tj ET
+1.000 1.000 1.000 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 284.00 515.00 24.00 re B
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 53.00 294.00 Td (Fault tolerance) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 203.00 294.00 Td (readers reload segments; writer replays WAL; coordinator leader failover) Tj ET
+endstream
+endobj
+10 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 9 0 R >>
+endobj
+11 0 obj
+<< /Length 10298 >>
+stream
+0.100 0.270 0.480 rg
+BT /F2 18.00 Tf 48.00 792.00 Td (SIFT1M QPS Scaling) Tj ET
+0.780 0.820 0.860 RG
+1.00 w
+48.00 782.00 m 547.00 782.00 l S
+0.000 0.000 0.000 rg
+BT /F1 10.00 Tf 48.00 760.00 Td (The current local scaling input comes from scaling_results.json. It measures coordinator) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 10.00 Tf 48.00 746.00 Td (search throughput while varying active reader count from 1 to 5. The expected Figure) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 10.00 Tf 48.00 732.00 Td (10b-style artifact is a QPS-vs-reader-count curve.) Tj ET
+0.100 0.270 0.480 rg
+BT /F2 11.00 Tf 48.00 706.00 Td (QPS vs reader nodes) Tj ET
+0.780 0.820 0.860 RG
+1.00 w
+98.00 670.00 m 98.00 522.00 l S
+0.780 0.820 0.860 RG
+1.00 w
+98.00 522.00 m 518.00 522.00 l S
+0.100 0.270 0.480 RG
+2.00 w
+98.00 670.00 m
+203.00 666.36 l
+308.00 660.22 l
+413.00 654.34 l
+518.00 648.93 l
+S
+0.100 0.270 0.480 rg
+101.00 670.00 m
+101.00 671.66 99.66 673.00 98.00 673.00 c
+96.34 673.00 95.00 671.66 95.00 670.00 c
+95.00 668.34 96.34 667.00 98.00 667.00 c
+99.66 667.00 101.00 668.34 101.00 670.00 c
+f
+0.100 0.270 0.480 rg
+206.00 666.36 m
+206.00 668.02 204.66 669.36 203.00 669.36 c
+201.34 669.36 200.00 668.02 200.00 666.36 c
+200.00 664.70 201.34 663.36 203.00 663.36 c
+204.66 663.36 206.00 664.70 206.00 666.36 c
+f
+0.100 0.270 0.480 rg
+311.00 660.22 m
+311.00 661.87 309.66 663.22 308.00 663.22 c
+306.34 663.22 305.00 661.87 305.00 660.22 c
+305.00 658.56 306.34 657.22 308.00 657.22 c
+309.66 657.22 311.00 658.56 311.00 660.22 c
+f
+0.100 0.270 0.480 rg
+416.00 654.34 m
+416.00 656.00 414.66 657.34 413.00 657.34 c
+411.34 657.34 410.00 656.00 410.00 654.34 c
+410.00 652.68 411.34 651.34 413.00 651.34 c
+414.66 651.34 416.00 652.68 416.00 654.34 c
+f
+0.100 0.270 0.480 rg
+521.00 648.93 m
+521.00 650.59 519.66 651.93 518.00 651.93 c
+516.34 651.93 515.00 650.59 515.00 648.93 c
+515.00 647.28 516.34 645.93 518.00 645.93 c
+519.66 645.93 521.00 647.28 521.00 648.93 c
+f
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 95.00 508.00 Td (1) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 7.00 Tf 88.00 678.00 Td (100.5) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 200.00 508.00 Td (2) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 7.00 Tf 193.00 674.36 Td (98.0) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 305.00 508.00 Td (3) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 7.00 Tf 298.00 668.22 Td (93.9) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 410.00 508.00 Td (4) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 7.00 Tf 403.00 662.34 Td (89.9) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 515.00 508.00 Td (5) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 7.00 Tf 508.00 656.93 Td (86.2) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 288.00 490.00 Td (Readers) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 62.00 596.00 Td (QPS) Tj ET
+0.100 0.270 0.480 rg
+BT /F2 11.00 Tf 48.00 456.00 Td (Latency percentiles vs reader nodes) Tj ET
+0.780 0.820 0.860 RG
+1.00 w
+98.00 420.00 m 98.00 272.00 l S
+0.780 0.820 0.860 RG
+1.00 w
+98.00 272.00 m 518.00 272.00 l S
+0.780 0.820 0.860 RG
+1.00 w
+98.00 420.00 m 98.00 272.00 l S
+0.780 0.820 0.860 RG
+1.00 w
+98.00 272.00 m 518.00 272.00 l S
+0.100 0.270 0.480 RG
+1.60 w
+98.00 362.89 m
+203.00 367.01 l
+308.00 371.46 l
+413.00 374.84 l
+518.00 379.10 l
+S
+0.100 0.270 0.480 rg
+100.50 362.89 m
+100.50 364.27 99.38 365.39 98.00 365.39 c
+96.62 365.39 95.50 364.27 95.50 362.89 c
+95.50 361.51 96.62 360.39 98.00 360.39 c
+99.38 360.39 100.50 361.51 100.50 362.89 c
+f
+0.100 0.270 0.480 rg
+205.50 367.01 m
+205.50 368.39 204.38 369.51 203.00 369.51 c
+201.62 369.51 200.50 368.39 200.50 367.01 c
+200.50 365.63 201.62 364.51 203.00 364.51 c
+204.38 364.51 205.50 365.63 205.50 367.01 c
+f
+0.100 0.270 0.480 rg
+310.50 371.46 m
+310.50 372.84 309.38 373.96 308.00 373.96 c
+306.62 373.96 305.50 372.84 305.50 371.46 c
+305.50 370.08 306.62 368.96 308.00 368.96 c
+309.38 368.96 310.50 370.08 310.50 371.46 c
+f
+0.100 0.270 0.480 rg
+415.50 374.84 m
+415.50 376.22 414.38 377.34 413.00 377.34 c
+411.62 377.34 410.50 376.22 410.50 374.84 c
+410.50 373.46 411.62 372.34 413.00 372.34 c
+414.38 372.34 415.50 373.46 415.50 374.84 c
+f
+0.100 0.270 0.480 rg
+520.50 379.10 m
+520.50 380.48 519.38 381.60 518.00 381.60 c
+516.62 381.60 515.50 380.48 515.50 379.10 c
+515.50 377.72 516.62 376.60 518.00 376.60 c
+519.38 376.60 520.50 377.72 520.50 379.10 c
+f
+0.100 0.270 0.480 rg
+98.00 433.00 9.00 9.00 re f
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 112.00 433.00 Td (p50) Tj ET
+0.850 0.360 0.100 RG
+1.60 w
+98.00 400.21 m
+203.00 397.11 l
+308.00 394.82 l
+413.00 398.97 l
+518.00 398.81 l
+S
+0.850 0.360 0.100 rg
+100.50 400.21 m
+100.50 401.59 99.38 402.71 98.00 402.71 c
+96.62 402.71 95.50 401.59 95.50 400.21 c
+95.50 398.83 96.62 397.71 98.00 397.71 c
+99.38 397.71 100.50 398.83 100.50 400.21 c
+f
+0.850 0.360 0.100 rg
+205.50 397.11 m
+205.50 398.49 204.38 399.61 203.00 399.61 c
+201.62 399.61 200.50 398.49 200.50 397.11 c
+200.50 395.73 201.62 394.61 203.00 394.61 c
+204.38 394.61 205.50 395.73 205.50 397.11 c
+f
+0.850 0.360 0.100 rg
+310.50 394.82 m
+310.50 396.20 309.38 397.32 308.00 397.32 c
+306.62 397.32 305.50 396.20 305.50 394.82 c
+305.50 393.44 306.62 392.32 308.00 392.32 c
+309.38 392.32 310.50 393.44 310.50 394.82 c
+f
+0.850 0.360 0.100 rg
+415.50 398.97 m
+415.50 400.35 414.38 401.47 413.00 401.47 c
+411.62 401.47 410.50 400.35 410.50 398.97 c
+410.50 397.58 411.62 396.47 413.00 396.47 c
+414.38 396.47 415.50 397.58 415.50 398.97 c
+f
+0.850 0.360 0.100 rg
+520.50 398.81 m
+520.50 400.19 519.38 401.31 518.00 401.31 c
+516.62 401.31 515.50 400.19 515.50 398.81 c
+515.50 397.43 516.62 396.31 518.00 396.31 c
+519.38 396.31 520.50 397.43 520.50 398.81 c
+f
+0.850 0.360 0.100 rg
+146.00 433.00 9.00 9.00 re f
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 160.00 433.00 Td (p95) Tj ET
+0.200 0.550 0.320 RG
+1.60 w
+98.00 420.00 m
+203.00 408.39 l
+308.00 413.52 l
+413.00 412.91 l
+518.00 412.03 l
+S
+0.200 0.550 0.320 rg
+100.50 420.00 m
+100.50 421.38 99.38 422.50 98.00 422.50 c
+96.62 422.50 95.50 421.38 95.50 420.00 c
+95.50 418.62 96.62 417.50 98.00 417.50 c
+99.38 417.50 100.50 418.62 100.50 420.00 c
+f
+0.200 0.550 0.320 rg
+205.50 408.39 m
+205.50 409.77 204.38 410.89 203.00 410.89 c
+201.62 410.89 200.50 409.77 200.50 408.39 c
+200.50 407.01 201.62 405.89 203.00 405.89 c
+204.38 405.89 205.50 407.01 205.50 408.39 c
+f
+0.200 0.550 0.320 rg
+310.50 413.52 m
+310.50 414.90 309.38 416.02 308.00 416.02 c
+306.62 416.02 305.50 414.90 305.50 413.52 c
+305.50 412.14 306.62 411.02 308.00 411.02 c
+309.38 411.02 310.50 412.14 310.50 413.52 c
+f
+0.200 0.550 0.320 rg
+415.50 412.91 m
+415.50 414.29 414.38 415.41 413.00 415.41 c
+411.62 415.41 410.50 414.29 410.50 412.91 c
+410.50 411.53 411.62 410.41 413.00 410.41 c
+414.38 410.41 415.50 411.53 415.50 412.91 c
+f
+0.200 0.550 0.320 rg
+520.50 412.03 m
+520.50 413.41 519.38 414.53 518.00 414.53 c
+516.62 414.53 515.50 413.41 515.50 412.03 c
+515.50 410.65 516.62 409.53 518.00 409.53 c
+519.38 409.53 520.50 410.65 520.50 412.03 c
+f
+0.200 0.550 0.320 rg
+194.00 433.00 9.00 9.00 re f
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 208.00 433.00 Td (p99) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 288.00 240.00 Td (Readers) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 62.00 346.00 Td (ms) Tj ET
+0.100 0.270 0.480 rg
+0.100 0.270 0.480 RG
+1.00 w
+48.00 194.00 480.00 24.00 re B
+1.000 1.000 1.000 rg
+BT /F2 8.00 Tf 53.00 203.00 Td (Readers) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.00 Tf 108.00 203.00 Td (QPS) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.00 Tf 178.00 203.00 Td (p50) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.00 Tf 248.00 203.00 Td (p95) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.00 Tf 318.00 203.00 Td (p99) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.00 Tf 388.00 203.00 Td (Errors) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.00 Tf 443.00 203.00 Td (Efficiency) Tj ET
+0.970 0.980 0.990 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 170.00 480.00 24.00 re B
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 53.00 180.00 Td (1) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 108.00 180.00 Td (100.50) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 178.00 180.00 Td (315.61) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 248.00 180.00 Td (445.19) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 318.00 180.00 Td (513.91) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 388.00 180.00 Td (0) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 443.00 180.00 Td (100.0%) Tj ET
+1.000 1.000 1.000 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 146.00 480.00 24.00 re B
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 53.00 156.00 Td (2) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 108.00 156.00 Td (98.03) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 178.00 156.00 Td (329.92) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 248.00 156.00 Td (434.42) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 318.00 156.00 Td (473.58) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 388.00 156.00 Td (0) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 443.00 156.00 Td (48.8%) Tj ET
+0.970 0.980 0.990 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 122.00 480.00 24.00 re B
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 53.00 132.00 Td (3) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 108.00 132.00 Td (93.86) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 178.00 132.00 Td (345.37) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 248.00 132.00 Td (426.48) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 318.00 132.00 Td (491.42) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 388.00 132.00 Td (0) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 443.00 132.00 Td (31.1%) Tj ET
+1.000 1.000 1.000 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 98.00 480.00 24.00 re B
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 53.00 108.00 Td (4) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 108.00 108.00 Td (89.87) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 178.00 108.00 Td (357.09) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 248.00 108.00 Td (440.86) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 318.00 108.00 Td (489.28) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 388.00 108.00 Td (0) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 443.00 108.00 Td (22.4%) Tj ET
+0.970 0.980 0.990 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 74.00 480.00 24.00 re B
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 53.00 84.00 Td (5) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 108.00 84.00 Td (86.20) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 178.00 84.00 Td (371.87) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 248.00 84.00 Td (440.33) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 318.00 84.00 Td (486.23) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 388.00 84.00 Td (0) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 443.00 84.00 Td (17.2%) Tj ET
+endstream
+endobj
+12 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 11 0 R >>
+endobj
+13 0 obj
+<< /Length 5478 >>
+stream
+0.100 0.270 0.480 rg
+BT /F2 18.00 Tf 48.00 792.00 Td (Cross-Dataset Evaluation Matrix) Tj ET
+0.780 0.820 0.860 RG
+1.00 w
+48.00 782.00 m 547.00 782.00 l S
+0.000 0.000 0.000 rg
+BT /F1 10.00 Tf 48.00 760.00 Td (The report separates dataset readiness from benchmark readiness. A dataset can be available) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 10.00 Tf 48.00 746.00 Td (locally even if a full scaling or recall run has not been executed yet. This keeps the) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 10.00 Tf 48.00 732.00 Td (comparison honest and reproducible.) Tj ET
+0.100 0.270 0.480 rg
+0.100 0.270 0.480 RG
+1.00 w
+48.00 692.00 523.00 24.00 re B
+1.000 1.000 1.000 rg
+BT /F2 8.50 Tf 53.00 701.00 Td (Dataset) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.50 Tf 121.00 701.00 Td (Data) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.50 Tf 166.00 701.00 Td (Best QPS) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.50 Tf 261.00 701.00 Td (p95) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.50 Tf 331.00 701.00 Td (Recall) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.50 Tf 411.00 701.00 Td (Load) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.50 Tf 481.00 701.00 Td (Status) Tj ET
+0.970 0.980 0.990 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 657.00 523.00 35.00 re B
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 53.00 678.00 Td (SIFT10K) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 121.00 678.00 Td (yes) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 166.00 678.00 Td (109.77) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 261.00 678.00 Td (357.88 ms) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 331.00 678.00 Td (R@10=0.104,) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 331.00 666.50 Td (R@100=0.025) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 411.00 678.00 Td (9331/s) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 481.00 678.00 Td (qps measured) Tj ET
+1.000 1.000 1.000 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 622.00 523.00 35.00 re B
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 53.00 643.00 Td (SIFT1M) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 121.00 643.00 Td (yes) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 166.00 643.00 Td (100.50 @ 1 readers) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 261.00 643.00 Td (445.19 ms) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 331.00 643.00 Td (R@10=0.998,) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 331.00 631.50 Td (R@100=0.996) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 411.00 643.00 Td (9703/s) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 481.00 643.00 Td (measured) Tj ET
+0.970 0.980 0.990 rg
+0.780 0.820 0.860 RG
+1.00 w
+48.00 598.00 523.00 24.00 re B
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 53.00 608.00 Td (Deep1M) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 121.00 608.00 Td (yes) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 166.00 608.00 Td (104.18 @ 1 readers) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 261.00 608.00 Td (422.43 ms) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 331.00 608.00 Td (skipped) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 411.00 608.00 Td (7713/s) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.50 Tf 481.00 608.00 Td (measured) Tj ET
+0.100 0.270 0.480 rg
+BT /F2 11.00 Tf 48.00 560.00 Td (Dataset and benchmark coverage) Tj ET
+0.200 0.550 0.320 rg
+1.000 1.000 1.000 RG
+1.00 w
+88.00 460.00 135.33 62.00 re B
+1.000 1.000 1.000 rg
+BT /F2 10.00 Tf 100.00 487.00 Td (yes) Tj ET
+0.760 0.200 0.200 rg
+1.000 1.000 1.000 RG
+1.00 w
+88.00 390.00 135.33 62.00 re B
+1.000 1.000 1.000 rg
+BT /F2 10.00 Tf 100.00 417.00 Td (no) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 93.00 370.00 Td (SIFT10K) Tj ET
+0.200 0.550 0.320 rg
+1.000 1.000 1.000 RG
+1.00 w
+231.33 460.00 135.33 62.00 re B
+1.000 1.000 1.000 rg
+BT /F2 10.00 Tf 243.33 487.00 Td (yes) Tj ET
+0.200 0.550 0.320 rg
+1.000 1.000 1.000 RG
+1.00 w
+231.33 390.00 135.33 62.00 re B
+1.000 1.000 1.000 rg
+BT /F2 10.00 Tf 243.33 417.00 Td (yes) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 236.33 370.00 Td (SIFT1M) Tj ET
+0.200 0.550 0.320 rg
+1.000 1.000 1.000 RG
+1.00 w
+374.67 460.00 135.33 62.00 re B
+1.000 1.000 1.000 rg
+BT /F2 10.00 Tf 386.67 487.00 Td (yes) Tj ET
+0.200 0.550 0.320 rg
+1.000 1.000 1.000 RG
+1.00 w
+374.67 390.00 135.33 62.00 re B
+1.000 1.000 1.000 rg
+BT /F2 10.00 Tf 386.67 417.00 Td (yes) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 8.00 Tf 379.67 370.00 Td (Deep1M) Tj ET
+0.000 0.000 0.000 rg
+BT /F2 8.00 Tf 50.00 487.00 Td (Data) Tj ET
+0.000 0.000 0.000 rg
+BT /F2 8.00 Tf 50.00 417.00 Td (Scaling) Tj ET
+0.100 0.270 0.480 rg
+BT /F2 13.00 Tf 48.00 315.00 Td (Interpretation) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 58.00 297.00 Td (-) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 70.00 297.00 Td (SIFT10K validates correctness quickly and should report Recall@10/Recall@100.) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 58.00 284.00 Td (-) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 70.00 284.00 Td (SIFT1M is the primary performance dataset and currently has local QPS scaling data.) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 58.00 271.00 Td (-) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 70.00 271.00 Td (Deep1M is listed for paper replication but requires a local 96D HDF5 file and loader) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 70.00 258.00 Td (validation.) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 58.00 245.00 Td (-) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 70.00 245.00 Td (The current SIFT1M run is not near-linear; QPS decreases as readers increase, which) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 70.00 232.00 Td (suggests local resource contention or benchmark setup effects that should be) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 70.00 219.00 Td (investigated before claiming positive scaling.) Tj ET
+endstream
+endobj
+14 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 13 0 R >>
+endobj
+15 0 obj
+<< /Length 3518 >>
+stream
+0.100 0.270 0.480 rg
+BT /F2 18.00 Tf 48.00 792.00 Td (Methodology And Reproduction) Tj ET
+0.780 0.820 0.860 RG
+1.00 w
+48.00 782.00 m 547.00 782.00 l S
+0.000 0.000 0.000 rg
+BT /F1 10.00 Tf 48.00 760.00 Td (The report is generated from local files, not hard-coded benchmark claims. Run the commands) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 10.00 Tf 48.00 746.00 Td (below to refresh data, then rerun the report scripts.) Tj ET
+0.000 0.000 0.000 rg
+BT /F2 10.00 Tf 48.00 716.00 Td (Collect metrics) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 60.00 702.00 Td (python report/collect_metrics.py) Tj ET
+0.000 0.000 0.000 rg
+BT /F2 10.00 Tf 48.00 682.00 Td (Generate PDF) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 60.00 668.00 Td (python report/generate_report.py) Tj ET
+0.000 0.000 0.000 rg
+BT /F2 10.00 Tf 48.00 648.00 Td (SIFT1M scaling) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 60.00 634.00 Td (python -m vecscaledb.bench.scaling_eval --dataset data/sift1m/sift1m.hdf5) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 60.00 622.00 Td (--coordinator-url http://127.0.0.1:8000 --reader-counts 1 2 3 4 5 --duration 60) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 60.00 610.00 Td (--concurrency 32 --query-limit 1000 --output) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 60.00 598.00 Td (report/results/sift1m_scaling_results.json --auto-scale) Tj ET
+0.000 0.000 0.000 rg
+BT /F2 10.00 Tf 48.00 578.00 Td (SIFT10K recall) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 60.00 564.00 Td (python -m vecscaledb.bench.recall_eval --host 127.0.0.1 --port 8000 --dataset) Tj ET
+0.250 0.250 0.250 rg
+BT /F1 8.00 Tf 60.00 552.00 Td (data/sift1m/sift1m.hdf5) Tj ET
+0.100 0.270 0.480 rg
+BT /F2 13.00 Tf 48.00 532.00 Td (Metrics used) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 58.00 514.00 Td (-) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 70.00 514.00 Td (QPS: completed search requests divided by elapsed seconds.) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 58.00 501.00 Td (-) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 70.00 501.00 Td (Latency p50/p95/p99: percentile search latency in milliseconds.) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 58.00 488.00 Td (-) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 70.00 488.00 Td (Errors: failed or incomplete search requests in the benchmark window.) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 58.00 475.00 Td (-) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 70.00 475.00 Td (Scaling efficiency: observed speedup divided by reader-count increase.) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 58.00 462.00 Td (-) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 70.00 462.00 Td (Recall@k: overlap between returned top-k IDs and ground-truth nearest neighbors.) Tj ET
+0.100 0.270 0.480 rg
+BT /F2 13.00 Tf 48.00 439.00 Td (Caveats) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 58.00 421.00 Td (-) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 70.00 421.00 Td (Milvus published values are not embedded numerically in this repo; the comparison) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 70.00 408.00 Td (reproduces the metric shape and dataset setup.) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 58.00 395.00 Td (-) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 70.00 395.00 Td (Deep1M is marked pending until the local dataset is supplied.) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 58.00 382.00 Td (-) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 70.00 382.00 Td (A single laptop Docker run can show resource contention, so final claims should be) Tj ET
+0.000 0.000 0.000 rg
+BT /F1 9.00 Tf 70.00 369.00 Td (made from controlled repeated runs.) Tj ET
+endstream
+endobj
+16 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 15 0 R >>
+endobj
+xref
+0 17
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000155 00000 n 
+0000000225 00000 n 
+0000000300 00000 n 
+0000005728 00000 n 
+0000005864 00000 n 
+0000012827 00000 n 
+0000012963 00000 n 
+0000017699 00000 n 
+0000017836 00000 n 
+0000028188 00000 n 
+0000028326 00000 n 
+0000033857 00000 n 
+0000033995 00000 n 
+0000037566 00000 n 
+trailer
+<< /Size 17 /Root 1 0 R >>
+startxref
+37704
+%%EOF

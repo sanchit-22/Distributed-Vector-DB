@@ -96,7 +96,11 @@ async def search(req: SearchRequest) -> dict:
         return {"ids": [], "distances": [], "incomplete": False}
     readers = _search_targets(readers)
 
-    async with httpx.AsyncClient(timeout=5.0) as http_client:
+    reader_timeout = httpx.Timeout(
+        settings.coordinator_reader_timeout_seconds,
+        connect=5.0,
+    )
+    async with httpx.AsyncClient(timeout=reader_timeout) as http_client:
         tasks = [
             _search_reader(http_client, reader, req, snapshot_id)
             for reader in readers
@@ -105,10 +109,16 @@ async def search(req: SearchRequest) -> dict:
 
     incomplete = False
     results = []
-    for response in responses:
+    for reader, response in zip(readers, responses):
         if isinstance(response, Exception):
             incomplete = True
-            logger.warning("reader.search.failed", error=str(response))
+            logger.warning(
+                "reader.search.failed",
+                reader_id=reader.node_id,
+                reader_address=reader.address,
+                error_type=type(response).__name__,
+                error=str(response),
+            )
             continue
         distances = np.array(response.get("distances", []), dtype=np.float32)
         ids = np.array(response.get("ids", []), dtype=np.int64)

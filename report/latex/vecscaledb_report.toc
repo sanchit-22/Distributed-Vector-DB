@@ -1,0 +1,37 @@
+\contentsline {section}{\numberline {1}Executive Summary}{3}{section.1}%
+\contentsline {section}{\numberline {2}System Architecture}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Component Overview}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Port Map}{4}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Architecture Diagram}{4}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Storage Layout}{4}{subsection.2.4}%
+\contentsline {section}{\numberline {3}Request Flows}{5}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Insert and Delete Flow}{5}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Search Flow}{5}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}WAL Recovery Flow}{6}{subsection.3.3}%
+\contentsline {section}{\numberline {4}Dataset Information}{6}{section.4}%
+\contentsline {section}{\numberline {5}Benchmark Methodology}{6}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Measured Quantities}{6}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Key Commands}{6}{subsection.5.2}%
+\contentsline {section}{\numberline {6}Benchmark Results}{7}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Load Throughput}{7}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Search Throughput and Latency}{8}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Recall}{9}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Reader Scaling}{9}{subsection.6.4}%
+\contentsline {section}{\numberline {7}Correctness and Feature Tests}{10}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Test Suite Overview}{10}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Key Feature Explanations}{11}{subsection.7.2}%
+\contentsline {subsubsection}{\numberline {7.2.1}IVF\_FLAT Vector Search}{11}{subsubsection.7.2.1}%
+\contentsline {subsubsection}{\numberline {7.2.2}WAL Durability}{11}{subsubsection.7.2.2}%
+\contentsline {subsubsection}{\numberline {7.2.3}Snapshot Isolation}{11}{subsubsection.7.2.3}%
+\contentsline {subsubsection}{\numberline {7.2.4}Scatter-Gather vs. Replicated Modes}{11}{subsubsection.7.2.4}%
+\contentsline {section}{\numberline {8}Fault Tolerance}{12}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Fault-Tolerance Matrix}{12}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Manual Fault-Tolerance Commands}{12}{subsection.8.2}%
+\contentsline {section}{\numberline {9}Discussion}{12}{section.9}%
+\contentsline {subsection}{\numberline {9.1}What Works}{12}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Observed Benchmark Behaviour}{13}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.3}Known Caveats}{13}{subsection.9.3}%
+\contentsline {section}{\numberline {10}Conclusion}{13}{section.10}%
+\contentsline {section}{\numberline {A}Runtime Setup Reference}{13}{appendix.A}%
+\contentsline {section}{\numberline {B}Key Source Paths}{14}{appendix.B}%
+\contentsline {section}{\numberline {C}Health Check Commands}{14}{appendix.C}%

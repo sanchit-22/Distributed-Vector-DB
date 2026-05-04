@@ -22,6 +22,7 @@ import json
 import subprocess
 import sys
 import time
+import urllib.request
 
 import numpy as np
 
@@ -34,7 +35,11 @@ def _reader_service_names(count: int) -> list[str]:
     return [f"reader-{i}" for i in range(count)]
 
 
-def _scale_readers(count: int, max_readers: int = 5) -> None:
+def _scale_readers(
+    count: int,
+    max_readers: int = 5,
+    coordinator_url: str = "http://127.0.0.1:8000",
+) -> None:
     """Scale reader services up/down using docker compose.
 
     Starts exactly `count` readers and stops the rest.
@@ -72,8 +77,36 @@ def _scale_readers(count: int, max_readers: int = 5) -> None:
                 ready_count += 1
         if ready_count == count:
             print(f"  All {count} reader(s) ready.")
+            _wait_for_coordinator_reader_view(coordinator_url, set(to_start))
             return
     print(f"  WARNING: Only {ready_count}/{count} readers became ready.")
+
+
+def _wait_for_coordinator_reader_view(
+    coordinator_url: str,
+    expected_reader_ids: set[str],
+) -> None:
+    """Wait until coordinator metadata no longer contains stale readers."""
+    print("  Waiting for coordinator reader registry to match active readers ...")
+    for _ in range(30):
+        try:
+            with urllib.request.urlopen(
+                f"{coordinator_url.rstrip('/')}/health",
+                timeout=2,
+            ) as response:
+                payload = json.loads(response.read().decode("utf-8"))
+            readers = {
+                node["node_id"]
+                for node in payload.get("nodes", [])
+                if node.get("role") == "reader"
+            }
+            if readers == expected_reader_ids:
+                print("  Coordinator reader registry is fresh.")
+                return
+        except Exception:
+            pass
+        time.sleep(1)
+    print("  WARNING: Coordinator still may contain stale reader registrations.")
 
 
 async def scaling_eval(
@@ -95,7 +128,7 @@ async def scaling_eval(
         print(f"{'='*60}")
 
         if auto_scale:
-            _scale_readers(count)
+            _scale_readers(count, coordinator_url=coordinator_url)
             # Extra settle time after scaling
             time.sleep(3)
 

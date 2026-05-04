@@ -1,0 +1,153 @@
+{
+  "dataset": "SIFT1M",
+  "dataset_key": "sift1m",
+  "path": "data/sift1m/sift1m.hdf5",
+  "dim": 128,
+  "metric": "L2",
+  "ground_truth_metric": "L2",
+  "train_limit": 1000000,
+  "query_limit": 1000,
+  "generated_at": "2026-05-04T22:16:13.835054+00:00",
+  "notes": [
+    "Primary performance benchmark."
+  ],
+  "hdf5": {
+    "keys": {
+      "distances": {
+        "shape": [
+          10000,
+          100
+        ],
+        "dtype": "float32"
+      },
+      "neighbors": {
+        "shape": [
+          10000,
+          100
+        ],
+        "dtype": "int32"
+      },
+      "test": {
+        "shape": [
+          10000,
+          128
+        ],
+        "dtype": "float32"
+      },
+      "train": {
+        "shape": [
+          1000000,
+          128
+        ],
+        "dtype": "float32"
+      }
+    }
+  },
+  "load": {
+    "inserted": 1000000,
+    "elapsed_seconds": 103.05845524200413,
+    "vectors_per_second": 9703.231022159007,
+    "last_response": {
+      "lsn": 100,
+      "inserted": 10000,
+      "segment_flushed": true,
+      "ntotal": 1000000,
+      "segments": 20,
+      "wal_lsn": 100
+    }
+  },
+  "qps": {
+    "total_queries": 5250,
+    "attempts": 5250,
+    "errors": 0,
+    "incomplete_errors": 0,
+    "request_errors": 0,
+    "error_rate": 0.0,
+    "elapsed_seconds": 60.14477895300661,
+    "qps": 87.28937226790747,
+    "p50_ms": 363.77577950042905,
+    "p95_ms": 433.02241474812035,
+    "p99_ms": 487.44015166084887
+  },
+  "scaling": [
+    {
+      "total_queries": 6035,
+      "attempts": 6035,
+      "errors": 0,
+      "incomplete_errors": 0,
+      "request_errors": 0,
+      "error_rate": 0.0,
+      "elapsed_seconds": 60.046888006007066,
+      "qps": 100.50479217834338,
+      "p50_ms": 315.6131430005189,
+      "p95_ms": 445.19092839473166,
+      "p99_ms": 513.9050103630871,
+      "readers": 1
+    },
+    {
+      "total_queries": 5896,
+      "attempts": 5896,
+      "errors": 0,
+      "incomplete_errors": 0,
+      "request_errors": 0,
+      "error_rate": 0.0,
+      "elapsed_seconds": 60.14322846099094,
+      "qps": 98.03264890949713,
+      "p50_ms": 329.92064449354075,
+      "p95_ms": 434.42491999667254,
+      "p99_ms": 473.5798574467481,
+      "readers": 2
+    },
+    {
+      "total_queries": 5646,
+      "attempts": 5646,
+      "errors": 0,
+      "incomplete_errors": 0,
+      "request_errors": 0,
+      "error_rate": 0.0,
+      "elapsed_seconds": 60.15312601000187,
+      "qps": 93.86045870768578,
+      "p50_ms": 345.37010549684055,
+      "p95_ms": 426.48176924922154,
+      "p99_ms": 491.4179100524053,
+      "readers": 3
+    },
+    {
+      "total_queries": 5408,
+      "attempts": 5408,
+      "errors": 0,
+      "incomplete_errors": 0,
+      "request_errors": 0,
+      "error_rate": 0.0,
+      "elapsed_seconds": 60.176150526007405,
+      "qps": 89.86949069902249,
+      "p50_ms": 357.09080150263617,
+      "p95_ms": 440.86480644982635,
+      "p99_ms": 489.2817266509521,
+      "readers": 4
+    },
+    {
+      "total_queries": 5191,
+      "attempts": 5191,
+      "errors": 0,
+      "incomplete_errors": 0,
+      "request_errors": 0,
+      "error_rate": 0.0,
+      "elapsed_seconds": 60.22170935900067,
+      "qps": 86.19815105304976,
+      "p50_ms": 371.871794006438,
+      "p95_ms": 440.3302079954301,
+      "p99_ms": 486.22711140778955,
+      "readers": 5
+    }
+  ],
+  "recall": {
+    "skipped": false,
+    "queries": 1000,
+    "errors": 0,
+    "nprobe": 32,
+    "latency_ms_avg": 28.04082687300979,
+    "recall_at_10": 0.9977,
+    "recall_at_100": 0.99599
+  }
+}
